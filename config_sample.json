@@ -1,8 +1,0 @@
-{
-  "host": "chat.freenode.net",
-  "ssl_port": 6697,
-  "nick": "Title[bot]",
-  "nick_password": "",
-  "channels": ["#some_chan1", "#some_chan2"],
-  "ignores": ["some_user"]
-}

@@ -9,4 +9,14 @@ Python ≥3.7 is required.
     $ cd ./irc-url-title-bot/
     $ python -m ircurltitlebot --config-path=/some/dir/config.json
 
-Refer to `config_sample.json` for a sample config.
+Sample config JSON:
+```json
+{
+  "host": "chat.freenode.net",
+  "ssl_port": 6697,
+  "nick": "Title[bot]",
+  "nick_password": "",
+  "channels": ["#some_chan1", "#some_chan2"],
+  "ignores": ["some_user"]
+}
+```
