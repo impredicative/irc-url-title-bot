@@ -21,7 +21,7 @@ def main():
     log.info('Read user configuration file %s', user_config_path)
 
     try:
-        log.info('Initializing bot.')
+        log.debug('Initializing bot.')
         Bot(user_config).start()
     except KeyboardInterrupt:
         sys.exit(1)
