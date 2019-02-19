@@ -17,7 +17,7 @@ class Bot:
                     nick=instance['nick'],
                     channels=instance['channels'],
                     ssl=True,
-                    debug=True,  # TODO: Eventually set debug=False
+                    debug=False,
                     ns_identity=f"{instance['nick']} {instance['nick_password']}",
                     quit_message='',
                     )
@@ -25,11 +25,15 @@ class Bot:
 
 @miniirc.Handler('PRIVMSG')
 def _handler(irc: miniirc.IRC, hostmask: Tuple[str, str, str], args: List[str]) -> None:
-    log.debug('Handling PRIVMSG: num_threads=%s, hostmask=%s, args=%s', threading.active_count(), hostmask, args)
-    _user, _ident, _hostname = hostmask
+    log.debug('Handling incoming message: num_threads=%s, hostmask=%s, args=%s',
+              threading.active_count(), hostmask, args)
+    user, _ident, _hostname = hostmask
     address = args[0]
     msg = args[-1]
     assert msg.startswith(':')
     msg = msg[1:]
-    if address in config.INSTANCE['channels']:
-        irc.msg(address, f'{config.TITLE_PREFIX} {msg}')
+    # irc.msg(address, f'{config.TITLE_PREFIX} {msg}')
+
+    if address not in config.INSTANCE['channels']:
+        log.info('Ignoring incoming message from %s in %s with content "%s".', user, address, msg)
+        return
