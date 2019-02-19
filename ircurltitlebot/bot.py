@@ -1,6 +1,6 @@
 import logging
 import threading
-from typing import Dict
+from typing import List, NoReturn, Tuple
 
 import miniirc
 
@@ -10,25 +10,26 @@ log = logging.getLogger(__name__)
 
 
 class Bot:
-    def __init__(self, user_config: Dict):
-        self._user_config = user_config
-        self._client = miniirc.IRC(ip=user_config['host'],
-                                   port=user_config['ssl_port'],
-                                   nick=user_config['nick'],
-                                   channels=user_config['channels'],
-                                   ssl=True,
-                                   debug=True,  # TODO: Eventually set debug=False
-                                   ns_identity=f"{user_config['nick']} {user_config['nick_password']}",
-                                   quit_message='',
-                                   )
+    def __init__(self) -> NoReturn:
+        instance = config.INSTANCE
+        miniirc.IRC(ip=instance['host'],
+                    port=instance['ssl_port'],
+                    nick=instance['nick'],
+                    channels=instance['channels'],
+                    ssl=True,
+                    debug=True,  # TODO: Eventually set debug=False
+                    ns_identity=f"{instance['nick']} {instance['nick_password']}",
+                    quit_message='',
+                    )
 
 
 @miniirc.Handler('PRIVMSG')
-def _handler(irc, hostmask, args):
+def _handler(irc: miniirc.IRC, hostmask: Tuple[str, str, str], args: List[str]) -> None:
     log.debug('Handling PRIVMSG: num_threads=%s, hostmask=%s, args=%s', threading.active_count(), hostmask, args)
-    user, _ident, _hostname = hostmask
+    _user, _ident, _hostname = hostmask
     address = args[0]
     msg = args[-1]
     assert msg.startswith(':')
     msg = msg[1:]
-    irc.msg(address, msg * 2)
+    if address in config.INSTANCE['channels']:
+        irc.msg(address, f'{config.TITLE_PREFIX} {msg}')

@@ -1,5 +1,6 @@
 import logging.config
 from pathlib import Path
+from typing import Dict
 
 
 def configure_logging() -> None:
@@ -8,6 +9,7 @@ def configure_logging() -> None:
     log.debug('Logging is configured.')
 
 
+INSTANCE: Dict = {}  # Set from JSON config file.
 MAX_WORKERS_PER_CHANNEL = 2
 PACKAGE_NAME = Path(__file__).parent.stem
 TITLE_PREFIX = '⤷'

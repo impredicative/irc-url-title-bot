@@ -14,19 +14,20 @@ def main() -> None:
     # Read args
     parser = argparse.ArgumentParser(prog=config.PACKAGE_NAME, description="IRC URL title bot")
     parser.add_argument('--config-path', required=True, help='Configuration file path, e.g. /some/dir/config.json')
-    user_config_path = parser.parse_args().config_path
+    instance_config_path = parser.parse_args().config_path
 
     # Read user config
-    log.debug('Reading user configuration file %s', user_config_path)
-    with open(user_config_path) as user_config_file:
-        user_config = json.load(user_config_file)
+    log.debug('Reading instance configuration file %s', instance_config_path)
+    with open(instance_config_path) as instance_config_file:
+        instance_config = json.load(instance_config_file)
     log.info('Read user configuration file "%s" having configuration: %s',
-             user_config_path, json.dumps(user_config).replace(user_config['nick_password'], '<password>'))
+             instance_config_path, json.dumps(instance_config).replace(instance_config['nick_password'], '<password>'))
+    config.INSTANCE = instance_config
 
     # Start bot
     try:
         log.debug('Initializing bot.')
-        Bot(user_config)
+        Bot()
     except KeyboardInterrupt:
         sys.exit(1)
 
