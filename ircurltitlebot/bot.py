@@ -1,6 +1,6 @@
 import logging
 import threading
-from typing import List, NoReturn, Tuple
+from typing import List, Tuple
 
 import miniirc
 
@@ -10,7 +10,7 @@ log = logging.getLogger(__name__)
 
 
 class Bot:
-    def __init__(self) -> NoReturn:
+    def __init__(self) -> None:
         instance = config.INSTANCE
         miniirc.IRC(ip=instance['host'],
                     port=instance['ssl_port'],
