@@ -11,6 +11,7 @@ def configure_logging() -> None:
 MAX_WORKERS = 16
 MAX_WORKERS_PER_CHANNEL = 2
 PACKAGE_NAME = Path(__file__).parent.stem
+TITLE_PREFIX = '⤷'
 
 LOGGING = {  # Ref: https://docs.python.org/3/howto/logging.html#configuring-logging
     'version': 1,
