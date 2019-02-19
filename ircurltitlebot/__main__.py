@@ -18,7 +18,8 @@ def main() -> None:
     log.debug('Reading user configuration file %s', user_config_path)
     with open(user_config_path) as user_config_file:
         user_config = json.load(user_config_file)
-    log.info('Read user configuration file %s', user_config_path)
+    log.info('Read user configuration file "%s" having configuration: %s',
+             user_config_path, json.dumps(user_config).replace(user_config['nick_password'], '<password>'))
 
     try:
         log.debug('Initializing bot.')
