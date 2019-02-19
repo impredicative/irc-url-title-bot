@@ -10,7 +10,7 @@ config.configure_logging()
 log = logging.getLogger(__name__)
 
 
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(prog=config.PACKAGE_NAME, description="IRC URL title bot")
     parser.add_argument('--config-path', required=True, help='Configuration file path, e.g. /some/dir/config.json')
     user_config_path = parser.parse_args().config_path
