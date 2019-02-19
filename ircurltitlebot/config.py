@@ -8,7 +8,6 @@ def configure_logging() -> None:
     log.debug('Logging is configured.')
 
 
-MAX_WORKERS = 16
 MAX_WORKERS_PER_CHANNEL = 2
 PACKAGE_NAME = Path(__file__).parent.stem
 TITLE_PREFIX = '⤷'
