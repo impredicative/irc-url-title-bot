@@ -1,4 +1,5 @@
 import logging
+from threading import active_count
 from typing import Dict
 
 import miniirc
@@ -23,9 +24,10 @@ class Bot:
 
     @miniirc.Handler('PRIVMSG')
     def handler(irc, hostmask, args):
-        # irc:      An 'IRC' object.
-        # hostmask: A 'hostmask' object.
-        # args:     A list containing the arguments sent to the command.
-        #             Everything following the first `:` in the command
-        #             is put into one item (args[-1]).
-        log.debug('Handler activated: irc=%s, hostmask=%s, args=%s', repr(irc), repr(hostmask), repr(args))
+        log.debug('Handling PRIVMSG: hostmask=%s, args=%s num_threads=%s', hostmask, args, active_count())
+        user, _ident, _hostname = hostmask
+        address = args[0]
+        msg = args[-1]
+        assert msg.startswith(':')
+        msg = msg[1:]
+        irc.msg(address, msg * 2)

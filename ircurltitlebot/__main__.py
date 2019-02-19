@@ -3,7 +3,7 @@ import logging
 import json
 import sys
 
-from . import Bot, config
+from ircurltitlebot import Bot, config
 
 config.configure_logging()
 
