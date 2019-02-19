@@ -4,11 +4,29 @@
 #
 #    pip-compile --output-file requirements.txt requirements.in
 #
+appdirs==1.4.3            # via urlextract
 beautifulsoup4==4.7.1     # via urltitle
 cachetools==3.1.0         # via urltitle
 defusedxml==0.5.0         # via pikepdf
 humanize==0.5.1           # via urltitle
+ib3==0.2.0
+idna==2.8                 # via urlextract
+inflect==2.1.0            # via jaraco.itertools
+irc==17.0                 # via ib3
+jaraco.classes==2.0       # via jaraco.collections
+jaraco.collections==2.0   # via irc, jaraco.text
+jaraco.functools==2.0     # via irc, jaraco.text, tempora
+jaraco.itertools==4.4.1   # via irc
+jaraco.logging==2.0       # via irc
+jaraco.stream==2.0        # via irc
+jaraco.text==2.0          # via irc, jaraco.collections
 lxml==4.3.1               # via pikepdf
+more-itertools==6.0.0     # via irc, jaraco.functools, jaraco.itertools
 pikepdf==1.0.5            # via urltitle
+pytz==2018.9              # via irc, tempora
+six==1.12.0               # via jaraco.classes, jaraco.collections, jaraco.itertools, jaraco.logging, jaraco.stream, tempora
 soupsieve==1.8            # via beautifulsoup4
+tempora==1.14             # via irc, jaraco.logging
+uritools==2.2.0           # via urlextract
+urlextract==0.9
 urltitle==0.0.2
