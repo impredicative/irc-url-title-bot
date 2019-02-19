@@ -32,8 +32,10 @@ def _handler(irc: miniirc.IRC, hostmask: Tuple[str, str, str], args: List[str]) 
     msg = args[-1]
     assert msg.startswith(':')
     msg = msg[1:]
-    # irc.msg(address, f'{config.TITLE_PREFIX} {msg}')
 
     if address not in config.INSTANCE['channels']:
-        log.info('Ignoring incoming message from %s in %s with content "%s".', user, address, msg)
+        assert address == config.INSTANCE['nick']
+        log.info('Ignoring incoming private message from %s: %s.', user, msg)
         return
+
+    irc.msg(address, f'{config.TITLE_PREFIX} {msg}')
