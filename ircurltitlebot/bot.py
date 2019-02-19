@@ -22,12 +22,13 @@ class Bot:
                                    quit_message='',
                                    )
 
-    @miniirc.Handler('PRIVMSG')
-    def handler(irc, hostmask, args):
-        log.debug('Handling PRIVMSG: hostmask=%s, args=%s num_threads=%s', hostmask, args, active_count())
-        user, _ident, _hostname = hostmask
-        address = args[0]
-        msg = args[-1]
-        assert msg.startswith(':')
-        msg = msg[1:]
-        irc.msg(address, msg * 2)
+
+@miniirc.Handler('PRIVMSG')
+def _handler(irc, hostmask, args):
+    log.debug('Handling PRIVMSG: hostmask=%s, args=%s num_threads=%s', hostmask, args, active_count())
+    user, _ident, _hostname = hostmask
+    address = args[0]
+    msg = args[-1]
+    assert msg.startswith(':')
+    msg = msg[1:]
+    irc.msg(address, msg * 2)
