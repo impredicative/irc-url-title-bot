@@ -17,7 +17,7 @@ class Bot:
                                    nick=user_config['nick'],
                                    channels=user_config['channels'],
                                    ssl=True,
-                                   debug=True,
+                                   debug=True,  # TODO: Eventually set debug=False
                                    ns_identity=f"{user_config['nick']} {user_config['nick_password']}",
                                    quit_message='',
                                    )
