@@ -8,8 +8,6 @@ def configure_logging() -> None:
     log.debug('Logging is configured.')
 
 
-DEFAULT_USER_AGENT = 'Mozilla/5.0'
-MAX_CACHE_SIZE = 2048
 MAX_WORKERS = 16
 PACKAGE_NAME = Path(__file__).parent.stem
 REQUEST_TIMEOUT = 60
