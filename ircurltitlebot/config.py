@@ -10,7 +10,6 @@ def configure_logging() -> None:
 
 MAX_WORKERS = 16
 PACKAGE_NAME = Path(__file__).parent.stem
-REQUEST_TIMEOUT = 60
 
 LOGGING = {  # Ref: https://docs.python.org/3/howto/logging.html#configuring-logging
     'version': 1,
