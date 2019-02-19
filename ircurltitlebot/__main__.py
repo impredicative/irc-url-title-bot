@@ -26,7 +26,7 @@ def main() -> None:
     # Start bot
     try:
         log.debug('Initializing bot.')
-        Bot(user_config).start()
+        Bot(user_config)
     except KeyboardInterrupt:
         sys.exit(1)
 
