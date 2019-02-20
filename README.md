@@ -21,4 +21,4 @@ Sample config JSON:
 }
 ```
 
-It is recommended that the bot be voiced in each channel.
+It is recommended that the bot be auto-voiced in each channel.
