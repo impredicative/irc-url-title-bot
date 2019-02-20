@@ -15,7 +15,8 @@ url_title_reader = URLTitleReader()
 
 
 class Bot:
-    def __init__(self) -> NoReturn:  # type: ignore
+    def serve(self) -> NoReturn:  # type: ignore
+        log.debug('Serving bot.')
         instance = config.INSTANCE
         miniirc.IRC(ip=instance['host'],
                     port=instance['ssl_port'],
