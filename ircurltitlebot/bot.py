@@ -1,9 +1,12 @@
+import concurrent.futures
 import logging
 import threading
 from time import monotonic
-from typing import List, NoReturn, Tuple
+# noinspection PyUnresolvedReferences
+from queue import SimpleQueue  # type: ignore
+from typing import Dict, List, NoReturn, Tuple, Optional
 
-import miniirc
+from miniirc import Handler as IRCHandler, IRC
 from urltitle import URLTitleReader
 from urlextract import URLExtract
 
@@ -15,25 +18,83 @@ url_title_reader = URLTitleReader()
 
 
 class Bot:
+    EXECUTORS: Dict[str, concurrent.futures.ThreadPoolExecutor] = {}
+    QUEUES: Dict[str, SimpleQueue] = {}
+
+    def __init__(self):
+        log.debug('Initializing bot.')
+
+        # Setup channels
+        channels = config.INSTANCE['channels']
+        channels_str = ', '.join(channels)
+        active_count = threading.active_count
+        log.debug('Setting up threads and queues for %s channels (%s) with %s currently active threads.',
+                  len(channels), channels_str, active_count())
+        for channel in channels:
+            log.debug('Setting up threads and queue for %s.', channel)
+            self.EXECUTORS[channel] = concurrent.futures.ThreadPoolExecutor(max_workers=config.MAX_WORKERS_PER_CHANNEL,
+                                                                            thread_name_prefix=f'URLHandler-{channel}')
+            self.QUEUES[channel] = SimpleQueue()
+            threading.Thread(target=_handle_titles, name=f'TitlesHandler-{channel}', args=(channel,)).start()
+            log.info('Finished setting up threads and queue for %s with %s currently active threads.',
+                     channel, active_count())
+        log.info('Finished setting up threads and queues for %s channels (%s) with %s currently active threads.',
+                 len(channels), channels_str, active_count())
+
     def serve(self) -> NoReturn:  # type: ignore
         log.debug('Serving bot.')
         instance = config.INSTANCE
-        miniirc.IRC(ip=instance['host'],
-                    port=instance['ssl_port'],
-                    nick=instance['nick'],
-                    channels=instance['channels'],
-                    ssl=True,
-                    debug=False,
-                    ns_identity=f"{instance['nick']} {instance['nick_password']}",
-                    quit_message='',
-                    )
+        IRC(ip=instance['host'],
+            port=instance['ssl_port'],
+            nick=instance['nick'],
+            channels=instance['channels'],
+            ssl=True,
+            debug=False,
+            ns_identity=f"{instance['nick']} {instance['nick_password']}",
+            quit_message='',
+            )
 
 
-@miniirc.Handler('PRIVMSG')
-def _handler(irc: miniirc.IRC, hostmask: Tuple[str, str, str], args: List[str]) -> None:
-    msg_time = monotonic()
-    log.debug('Handling incoming message: num_threads=%s, hostmask=%s, args=%s',
-              threading.active_count(), hostmask, args)
+def _handle_url(irc: IRC, channel: str, user: str, url: str) -> Optional[Tuple[IRC, str, str, str]]:  # type: ignore
+    start_time = monotonic()
+    try:
+        title = url_title_reader.title(url)
+    except Exception as exc:
+        log.error('Error reading title from URL %s in message from %s in %s in %.1fs: %s',
+                  url, user, channel, monotonic() - start_time, exc)
+    else:
+        log.debug('Returning title "%s" from URL %s in message from %s in %s in %.1fs.',
+                  title, url, user, channel, monotonic() - start_time)
+        return irc, user, url, title
+
+
+def _handle_titles(channel: str) -> NoReturn:
+    queue = Bot.QUEUES[channel]
+    title_timeout = config.TITLE_TIMEOUT
+    title_prefix = config.TITLE_PREFIX
+    active_count = threading.active_count
+    log.debug('Starting titles handler for %s.', channel)
+    while True:
+        url_future = queue.get()
+        start_time = monotonic()
+        try:
+            result = url_future.result(timeout=title_timeout)
+        except concurrent.futures.TimeoutError as exc:
+            log.error(exc)
+        else:
+            if result is None:
+                continue
+            irc, user, url, title = result
+            msg = f'{title_prefix} {title}'
+            irc.msg(channel, msg)
+            log.info('Sent outgoing message for %s in %s in %.1fs having content "%s" for URL %s with %s active '
+                     'threads.',
+                     user, channel, monotonic() - start_time, msg, url, active_count())
+
+
+@IRCHandler('PRIVMSG')
+def _handle_msg(irc: IRC, hostmask: Tuple[str, str, str], args: List[str]) -> None:
+    log.debug('Handling incoming message: hostmask=%s, args=%s', hostmask, args)
     user, _ident, _hostname = hostmask
     channel = args[0]
     msg = args[-1]
@@ -52,25 +113,22 @@ def _handler(irc: miniirc.IRC, hostmask: Tuple[str, str, str], args: List[str]) 
 
     # Extract URLs
     try:
-        urls = url_extractor.find_urls(msg, only_unique=True)
+        urls = url_extractor.find_urls(msg, only_unique=False)  # Assumes returned URLs have same order as in message.
+        # urls = list(dict.fromkeys(urls))  # Preserves ordering and guarantees uniqueness.
     except Exception as exc:
         log.error('Error extracting URLs in message from %s in %s having content "%s". The error is: %s',
                   user, channel, msg, exc)
         return
     if urls:
-        log.info('Incoming message from %s in %s having content "%s" has %s URLs: %s',
-                 user, channel, msg, len(urls), ', '.join(urls))
+        urls_str = ', '.join(urls)
+        log.debug('Incoming message from %s in %s has %s URLs: %s', user, channel, len(urls), urls_str)
+    else:
+        return
 
-    # Reply with titles
+    # Add jobs
+    executor = Bot.EXECUTORS[channel]
+    queue = Bot.QUEUES[channel]
     for url in urls:
-        try:
-            title = url_title_reader.title(url)
-        except Exception as exc:
-            log.error('Error reading title from URL %s in message from %s in %s having content "%s". The error is: %s',
-                      url, user, channel, msg, exc)
-        else:
-            reply = f'{config.TITLE_PREFIX} {title}'
-            irc.msg(channel, reply)
-            log.info('Sent outgoing message for %s in %s in %.1fs having content "%s" for URL %s in response to '
-                     'incoming message: %s',
-                     user, channel, monotonic() - msg_time, reply, url, msg)
+        url_future = executor.submit(_handle_url, irc, channel, user, url)
+        queue.put(url_future)
+    log.debug('Queued %s URLs for message from %s in %s: %s', len(urls), user, channel, urls_str)
