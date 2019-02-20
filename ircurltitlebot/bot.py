@@ -68,5 +68,5 @@ def _handler(irc: miniirc.IRC, hostmask: Tuple[str, str, str], args: List[str]) 
             reply = f'{config.TITLE_PREFIX} {title}'
             irc.msg(channel, reply)
             log.info('Sent outgoing message for %s in %s in %.1fs having content "%s" for URL %s in response to '
-                     'incoming message "%s"',
+                     'incoming message: %s',
                      user, channel, monotonic() - msg_time, reply, url, msg)
