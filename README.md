@@ -20,3 +20,5 @@ Sample config JSON:
   "ignores": ["some_user"]
 }
 ```
+
+It is recommended that the bot be voiced in each channel.
