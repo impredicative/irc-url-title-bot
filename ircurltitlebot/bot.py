@@ -42,7 +42,7 @@ def _handler(irc: miniirc.IRC, hostmask: Tuple[str, str, str], args: List[str]) 
     # Log but ignore unsolicited messages
     if channel not in config.INSTANCE['channels']:
         assert channel == config.INSTANCE['nick']
-        log.warning('Ignoring incoming private message from %s: %s', user, msg)
+        log.warning('Ignoring incoming private message from %s having content: %s', user, msg)
         return
 
     # Extract URLs
@@ -53,7 +53,8 @@ def _handler(irc: miniirc.IRC, hostmask: Tuple[str, str, str], args: List[str]) 
                   user, channel, msg, exc)
         return
     if urls:
-        log.info('Incoming message "%s" from %s in %s has %s URLs: %s', msg, user, channel, len(urls), ', '.join(urls))
+        log.info('Incoming message from %s in %s having content "%s" has %s URLs: %s',
+                 user, channel, msg, len(urls), ', '.join(urls))
 
     # Reply with titles
     for url in urls:
@@ -65,6 +66,6 @@ def _handler(irc: miniirc.IRC, hostmask: Tuple[str, str, str], args: List[str]) 
         else:
             reply = f'{config.TITLE_PREFIX} {title}'
             irc.msg(channel, reply)
-            log.info('Sent outgoing message with title "%s" for URL "%s" to %s in %.1fs in response to incoming message'
-                     ' "%s" from %s.',
-                     reply, url, channel, monotonic() - msg_time, msg, user)
+            log.info('Sent outgoing message for %s in %s in %.1fs having content "%s" for URL %s in response to '
+                     'incoming message "%s"',
+                     user, channel, monotonic() - msg_time, reply, url, msg)
