@@ -1,7 +1,6 @@
 import argparse
 import logging
 import json
-import sys
 
 from ircurltitlebot import Bot, config
 
@@ -25,10 +24,7 @@ def main() -> None:
     config.INSTANCE = instance_config
 
     # Start bot
-    try:
-        Bot().serve()
-    except KeyboardInterrupt:
-        sys.exit(1)
+    Bot().serve()
 
 
 if __name__ == '__main__':
