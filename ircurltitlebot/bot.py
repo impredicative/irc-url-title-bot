@@ -39,17 +39,21 @@ def _handler(irc: miniirc.IRC, hostmask: Tuple[str, str, str], args: List[str]) 
     assert msg.startswith(':')
     msg = msg[1:]
 
+    # Log but ignore unsolicited messages
     if channel not in config.INSTANCE['channels']:
         assert channel == config.INSTANCE['nick']
-        log.info('Ignoring incoming private message from %s: %s.', user, msg)
+        log.warning('Ignoring incoming private message from %s: %s.', user, msg)
         return
 
+    # Extract URLs
     try:
         urls = url_extractor.find_urls(msg, only_unique=True)
     except Exception as exc:
         log.error('Error extracting URLs in message from %s in %s having content "%s". The error is: %s',
                   user, channel, msg, exc)
         return
+
+    # Reply with titles
     for url in urls:
         try:
             title = url_title_reader.title(url)
