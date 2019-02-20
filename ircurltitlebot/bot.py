@@ -40,7 +40,11 @@ def _handler(irc: miniirc.IRC, hostmask: Tuple[str, str, str], args: List[str]) 
     assert msg.startswith(':')
     msg = msg[1:]
 
-    # Log but ignore unsolicited messages
+    # Ignore ignored users
+    if user in config.INSTANCE['ignores']:
+        return
+
+    # Ignore and log PMs
     if channel not in config.INSTANCE['channels']:
         assert channel == config.INSTANCE['nick']
         log.warning('Ignoring incoming private message from %s having content: %s', user, msg)
