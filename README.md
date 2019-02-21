@@ -2,11 +2,14 @@
 **irc-url-title-bot** is a Python-based IRC URL title bot.
 It essentially posts the page titles of the URLs that are posted in the configured channels on an IRC server.
 
-## Example
+## Examples
 ```text
 <Adam> For image super-resolution, see https://arxiv.org/abs/1902.06068, and for more reviews see https://j.mp/ml-reviews.
 <Title[bot]> ⤷ [1902.06068] Deep Learning for Image Super-resolution: A Survey
 <Title[bot]> ⤷ Review articles | freenode-machinelearning.github.io
+<Eve> scholar.google.com and semanticscholar.org list academic articles.
+<Title[bot]> ⤷ Google Scholar
+<Title[bot]> ⤷ Semantic Scholar - An academic search engine for scientific articles
 ```
 For more examples, see [`urltitle`](https://github.com/impredicative/urltitle/).
 ## Usage
