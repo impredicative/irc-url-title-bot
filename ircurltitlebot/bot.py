@@ -81,7 +81,7 @@ def _handle_titles(channel: str) -> NoReturn:
         try:
             result = url_future.result(timeout=title_timeout)
         except concurrent.futures.TimeoutError:
-            log.error('Result timed out after %.1fs given a timeout of %.1fs.', monotonic() - start_time)
+            log.error('Result timed out after %.1fs.', monotonic() - start_time)
         else:
             if result is None:
                 continue
