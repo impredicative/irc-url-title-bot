@@ -4,8 +4,6 @@ import json
 
 from ircurltitlebot import Bot, config
 
-config.configure_logging()
-
 log = logging.getLogger(__name__)
 
 
