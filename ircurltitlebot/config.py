@@ -10,7 +10,7 @@ def configure_logging() -> None:
 
 
 INSTANCE: Dict = {}  # Set from JSON config file.
-MAX_WORKERS_PER_CHANNEL = 3
+MAX_WORKERS_PER_CHANNEL = 4
 PACKAGE_NAME = Path(__file__).parent.stem
 TITLE_PREFIX = '⤷'
 TITLE_TIMEOUT = 60
