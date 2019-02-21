@@ -96,7 +96,7 @@ def _handle_titles(channel: str) -> NoReturn:
             irc, user, url, title = result
             msg = f'{title_prefix} {title}'
             irc.msg(channel, msg)
-            log.info('Sent outgoing message for message from %s in %s in %.1fs having content "%s" for URL %s with %s '
+            log.info('Sent outgoing message for %s in %s in %.1fs having content "%s" for URL %s with %s '
                      'active threads.',
                      user, channel, monotonic() - start_time, msg, url, active_count())
 
