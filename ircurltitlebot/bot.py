@@ -1,6 +1,7 @@
 import concurrent.futures
 from itertools import groupby
 import logging
+import string
 import threading
 from time import monotonic
 # noinspection PyUnresolvedReferences
@@ -13,6 +14,8 @@ from urltitle import URLTitleReader
 from urlextract import URLExtract
 
 from . import config
+
+PUNCTUATION = tuple(string.punctuation)
 
 log = logging.getLogger(__name__)
 url_extractor = URLExtract()
@@ -62,8 +65,12 @@ def _handle_url(irc: IRC, channel: str, user: str, url: str) -> Optional[Tuple[I
     try:
         title = url_title_reader.title(url)
     except Exception as exc:
-        log.error('Error reading title from URL %s in message from %s in %s in %.1fs: %s',
+        log.error('Error retrieving title from URL %s in message from %s in %s in %.1fs: %s',
                   url, user, channel, monotonic() - start_time, exc)
+        if url.endswith(PUNCTUATION):
+            log.info('Because the URL "%s" ends with a punctuation, and because there was an error retrieving its '
+                     'title, its last character "%s" will be stripped and it will be reattempted.', url, url[-1])
+            return _handle_url(irc, channel, user, url[:-1])
     else:
         log.debug('Returning title "%s" from URL %s in message from %s in %s in %.1fs.',
                   title, url, user, channel, monotonic() - start_time)
