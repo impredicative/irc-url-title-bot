@@ -37,7 +37,7 @@ class Bot:
                                                                             thread_name_prefix=f'URLHandler-{channel}')
             self.QUEUES[channel] = SimpleQueue()
             threading.Thread(target=_handle_titles, name=f'TitlesHandler-{channel}', args=(channel,)).start()
-            log.info('Finished setting up threads and queue for %s with %s currently active threads.',
+            log.debug('Finished setting up threads and queue for %s with %s currently active threads.',
                      channel, active_count())
         log.info('Finished setting up threads and queues for %s channels (%s) with %s currently active threads.',
                  len(channels), channels_str, active_count())
