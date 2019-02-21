@@ -19,8 +19,10 @@ def main() -> None:
     log.debug('Reading instance configuration file %s', instance_config_path)
     with open(instance_config_path) as instance_config_file:
         instance_config = json.load(instance_config_file)
+    logged_instance_config = instance_config.copy()
+    del logged_instance_config['nick_password']
     log.info('Read user configuration file "%s" having configuration: %s',
-             instance_config_path, json.dumps(instance_config).replace(instance_config['nick_password'], '<password>'))
+             instance_config_path, json.dumps(logged_instance_config))
     config.INSTANCE = instance_config
 
     # Start bot
