@@ -2,11 +2,19 @@
 **irc-url-title-bot** is an IRC URL title bot.
 It essentially posts the page titles of the URLs that are posted in the configured channels on an IRC server.
 
+## Example
+```text
+<Adam> For image super-resolution, see https://arxiv.org/abs/1902.06068, and for more reviews see https://j.mp/ml-reviews.
+<Title[bot]> ⤷ [1902.06068] Deep Learning for Image Super-resolution: A Survey
+<Title[bot]> ⤷ Review articles | freenode-machinelearning.github.io
+```
+For more examples, see [`urltitle`](https://github.com/impredicative/urltitle/).
 ## Usage
 
-Python ≥3.7 is required.
+In a new Python ≥3.7 virtual environment containing this repo, run:
 
     $ cd ./irc-url-title-bot/
+    $ pip install -Ur requirements.txt  # once
     $ python -m ircurltitlebot --config-path=/some/dir/config.json
 
 Sample config JSON:
