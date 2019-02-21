@@ -1,4 +1,5 @@
 import concurrent.futures
+from itertools import groupby
 import logging
 import threading
 from time import monotonic
@@ -114,7 +115,11 @@ def _handle_msg(irc: IRC, hostmask: Tuple[str, str, str], args: List[str]) -> No
     # Extract URLs
     try:
         urls = url_extractor.find_urls(msg, only_unique=False)  # Assumes returned URLs have same order as in message.
-        # urls = list(dict.fromkeys(urls))  # Preserves ordering and guarantees uniqueness.
+        # Note: Due to a bug in urlextract==0.9, a URL can erroneously be returned twice.
+        # Refer to https://github.com/lipoja/URLExtract/issues/32
+        urls = [url[0] for url in groupby(urls)]  # Guarantees consecutive uniqueness as a workaround for above bug.
+        # urls = list(dict.fromkeys(urls))  # Guarantees uniqueness while preserving ordering.
+
     except Exception as exc:
         log.error('Error extracting URLs in message from %s in %s having content "%s". The error is: %s',
                   user, channel, msg, exc)
