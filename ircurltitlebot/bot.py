@@ -124,7 +124,7 @@ def _handle_msg(irc: IRC, hostmask: Tuple[str, str, str], args: List[str]) -> No
     # Note: Due to a bug in urlextract==0.9, a URL can erroneously be returned twice. Refer to https://git.io/fhFLJ
     urls = [url[0] for url in groupby(urls)]  # Guarantees consecutive uniqueness as a workaround for above bug.
     # urls = list(dict.fromkeys(urls))  # Guarantees uniqueness while preserving ordering.
-    urls = [url for url in urls if not urlparse(url).scheme != 'file']  # Safety check independent of urlextract.
+    urls = [url for url in urls if urlparse(url).scheme != 'file']  # Safety check independent of urlextract.
     if urls:
         urls_str = ', '.join(urls)
         log.debug('Incoming message from %s in %s has %s URLs: %s', user, channel, len(urls), urls_str)
