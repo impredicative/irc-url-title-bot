@@ -6,6 +6,7 @@ from time import monotonic
 # noinspection PyUnresolvedReferences
 from queue import SimpleQueue  # type: ignore
 from typing import Dict, List, NoReturn, Tuple, Optional
+from urllib.parse import urlparse
 
 from miniirc import Handler as IRCHandler, IRC
 from urltitle import URLTitleReader
@@ -95,6 +96,7 @@ def _handle_titles(channel: str) -> NoReturn:
 
 @IRCHandler('PRIVMSG')
 def _handle_msg(irc: IRC, hostmask: Tuple[str, str, str], args: List[str]) -> None:
+    # Parse message
     log.debug('Handling incoming message: hostmask=%s, args=%s', hostmask, args)
     user, _ident, _hostname = hostmask
     channel = args[0]
@@ -102,11 +104,9 @@ def _handle_msg(irc: IRC, hostmask: Tuple[str, str, str], args: List[str]) -> No
     assert msg.startswith(':')
     msg = msg[1:]
 
-    # Ignore ignored users
+    # Ignore if not actionable
     if user in config.INSTANCE['ignores']:
         return
-
-    # Ignore and log PMs
     if channel not in config.INSTANCE['channels']:
         assert channel == config.INSTANCE['nick']
         log.warning('Ignoring incoming private message from %s having content: %s', user, msg)
@@ -115,14 +115,16 @@ def _handle_msg(irc: IRC, hostmask: Tuple[str, str, str], args: List[str]) -> No
     # Extract URLs
     try:
         urls = url_extractor.find_urls(msg, only_unique=False)  # Assumes returned URLs have same order as in message.
-        # Note: Due to a bug in urlextract==0.9, a URL can erroneously be returned twice.
-        # Refer to https://github.com/lipoja/URLExtract/issues/32
-        urls = [url[0] for url in groupby(urls)]  # Guarantees consecutive uniqueness as a workaround for above bug.
-        # urls = list(dict.fromkeys(urls))  # Guarantees uniqueness while preserving ordering.
     except Exception as exc:
         log.error('Error extracting URLs in message from %s in %s having content "%s". The error is: %s',
                   user, channel, msg, exc)
         return
+
+    # Filter URLs
+    # Note: Due to a bug in urlextract==0.9, a URL can erroneously be returned twice. Refer to https://git.io/fhFLJ
+    urls = [url[0] for url in groupby(urls)]  # Guarantees consecutive uniqueness as a workaround for above bug.
+    # urls = list(dict.fromkeys(urls))  # Guarantees uniqueness while preserving ordering.
+    urls = [url for url in urls if not urlparse(url).scheme != 'file']  # Safety check independent of urlextract.
     if urls:
         urls_str = ', '.join(urls)
         log.debug('Incoming message from %s in %s has %s URLs: %s', user, channel, len(urls), urls_str)
