@@ -26,7 +26,7 @@ class Bot:
     EXECUTORS: Dict[str, concurrent.futures.ThreadPoolExecutor] = {}
     QUEUES: Dict[str, SimpleQueue] = {}
 
-    def __init__(self):
+    def __init__(self) -> None:
         log.debug('Initializing bot.')
 
         # Setup channels
@@ -112,10 +112,10 @@ def _handle_msg(irc: IRC, hostmask: Tuple[str, str, str], args: List[str]) -> No
     msg = msg[1:]
 
     # Ignore if not actionable
-    if user in config.INSTANCE['ignores']:
+    if user.casefold() in config.INSTANCE['ignores:casefold']:
         return
-    if channel not in config.INSTANCE['channels']:
-        assert channel == config.INSTANCE['nick']
+    if channel.casefold() not in config.INSTANCE['channels:casefold']:
+        assert channel.casefold() == config.INSTANCE['nick:casefold']
         log.warning('Ignoring incoming private message from %s having content: %s', user, msg)
         return
 

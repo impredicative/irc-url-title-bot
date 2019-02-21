@@ -23,6 +23,11 @@ def main() -> None:
     del logged_instance_config['nick_password']
     log.info('Read user configuration file "%s" having configuration: %s',
              instance_config_path, json.dumps(logged_instance_config))
+
+    # Process user config
+    instance_config['nick:casefold'] = instance_config['nick'].casefold()
+    instance_config['channels:casefold'] = [channel.casefold() for channel in instance_config['channels']]
+    instance_config['ignores:casefold'] = [ignore.casefold() for ignore in instance_config['ignores']]
     config.INSTANCE = instance_config
 
     # Start bot
