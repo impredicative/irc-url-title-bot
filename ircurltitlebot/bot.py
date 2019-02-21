@@ -119,7 +119,6 @@ def _handle_msg(irc: IRC, hostmask: Tuple[str, str, str], args: List[str]) -> No
         # Refer to https://github.com/lipoja/URLExtract/issues/32
         urls = [url[0] for url in groupby(urls)]  # Guarantees consecutive uniqueness as a workaround for above bug.
         # urls = list(dict.fromkeys(urls))  # Guarantees uniqueness while preserving ordering.
-
     except Exception as exc:
         log.error('Error extracting URLs in message from %s in %s having content "%s". The error is: %s',
                   user, channel, msg, exc)
