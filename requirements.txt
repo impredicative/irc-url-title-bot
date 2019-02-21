@@ -17,4 +17,4 @@ pikepdf==1.0.5            # via urltitle
 soupsieve==1.8            # via beautifulsoup4
 uritools==2.2.0           # via urlextract
 urlextract==0.9
-urltitle==0.0.8
+urltitle==0.0.10

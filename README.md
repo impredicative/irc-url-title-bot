@@ -1,6 +1,8 @@
 # irc-url-title-bot
 **irc-url-title-bot** is a Python-based IRC URL title bot.
 It essentially posts the page titles of the URLs that are posted in the configured channels on an IRC server.
+As a disclaimer, note that SSL verification is disabled, and that the posted titles are not guaranteed to be accurate
+due to a number of factors.
 
 ## Examples
 ```text
