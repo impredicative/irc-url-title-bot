@@ -35,7 +35,7 @@ For more examples, see [`urltitle`](https://github.com/impredicative/urltitle/).
 
 * To run the bot as a Docker container, change to the directory containing the configured `config.json` file, and run:
 ```bash
-docker run -v "$PWD":/config:ro ascensive/irc-url-title-bot
+docker run -d -v "$PWD":/config:ro ascensive/irc-url-title-bot
 ```
-This will also print the log to stdout.
+To view and follow the logs, use `docker logs`.
 To rerun the newly created container in the future, use `docker start` instead.
