@@ -37,8 +37,8 @@ To use with multiple servers, use an instance per server.
 
 * To run the bot as a Docker container, change to the directory containing the configured `config.json` file, and run:
 ```bash
-docker run -d -v "$PWD":/config:ro ascensive/irc-url-title-bot
+docker run -d --restart always -v "$PWD":/config:ro ascensive/irc-url-title-bot
 ```
-To auto-restart the container when the host restarts, include the `--restart always` option in the command above.
-To view and follow the logs, use `docker logs`.
-To rerun the newly created container in the future, refer to the container by its assigned name.
+As is usual for Docker:
+* To view and follow the logs, use `docker logs`.
+* To rerun the newly created container in the future, refer to the container by its assigned name.
