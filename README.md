@@ -4,6 +4,10 @@ It essentially posts the page titles of the URLs that are posted in the configur
 As a disclaimer, note that SSL verification is disabled, and that the posted titles are not guaranteed to be accurate
 due to a number of factors.
 
+## Links
+* Code: https://github.com/impredicative/irc-url-title-bot
+* Container: https://hub.docker.com/r/ascensive/irc-url-title-bot
+
 ## Examples
 ```text
 <Adam> For image super-resolution, see https://arxiv.org/abs/1902.06068, and for more reviews see https://j.mp/ml-reviews.
