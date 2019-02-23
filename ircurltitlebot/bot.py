@@ -75,7 +75,8 @@ def _handle_url(irc: IRC, channel: str, user: str, url: str) -> Optional[Tuple[I
         alert = f'Error retrieving title for URL {url} in message from {user} in {channel} in {time_used:.1f}s: {exc}'
         if url.endswith(PUNCTUATION):
             period = '' if alert.endswith('.') else '.'
-            alert += f'{period} It will be reattempted with its last punctuation character "{url[-1]}" stripped.'
+            alert += f'{period} It will however be reattempted with its trailing punctuation character "{url[-1]}" ' \
+                     'stripped.'
         _alert(irc, alert)
         if url.endswith(PUNCTUATION):
             return _handle_url(irc, channel, user, url[:-1])

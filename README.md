@@ -13,9 +13,9 @@ due to a number of factors.
 <Adam> For image super-resolution, see https://arxiv.org/abs/1902.06068, and for more reviews see https://j.mp/ml-reviews.
 <Title[bot]> ⤷ [1902.06068] Deep Learning for Image Super-resolution: A Survey
 <Title[bot]> ⤷ Review articles | freenode-machinelearning.github.io
-<Eve> Thanks. Is github.com/visinf/n3net a good project? I've been reading www.greenteapress.com/thinkpython/thinkpython.pdf...
-<Title[bot]> ⤷ Google Scholar
-<Title[bot]> ⤷ Semantic Scholar - An academic search engine for scientific articles
+<Eve> Thanks. Is github.com/visinf/n3net a good project? I've been studying bugs.python.org/file47781/Tutorial_EDIT.pdf
+<Title[bot]> ⤷ GitHub - visinf/n3net: Neural Nearest Neighbors Networks (NIPS*2018)
+<Title[bot]> ⤷ Python Tutorial
 ```
 For more examples, see [`urltitle`](https://github.com/impredicative/urltitle/).
 ## Usage
