@@ -20,22 +20,22 @@ due to a number of factors.
 For more examples, see [`urltitle`](https://github.com/impredicative/urltitle/).
 ## Usage
 
-In a new Python ≥3.7 virtual environment containing this repo, run:
-
-    $ cd ./irc-url-title-bot/
-    $ pip install -Ur requirements.txt  # once
-    $ python -m ircurltitlebot --config-path=/some/dir/config.json
-
-Sample config JSON:
+* Prepare a `config.json` file using the sample below. All keys are mandatory.
 ```json
 {
   "host": "chat.freenode.net",
   "ssl_port": 6697,
   "nick": "Title[bot]",
-  "nick_password": "",
+  "nick_password": "the_correct_password",
   "channels": ["#some_chan1", "#some_chan2"],
   "ignores": ["some_user"]
 }
 ```
+* It is recommended that the bot be auto-voiced (+V) in each channel.
 
-It is recommended that the bot be auto-voiced in each channel.
+* To run the bot as a Docker container, change to the directory containing the configured `config.json` file, and run:
+```bash
+docker run -v "$PWD":/config:ro ascensive/irc-url-title-bot
+```
+This will also print the log to stdout.
+To rerun the newly created container in the future, use `docker start` instead.
