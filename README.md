@@ -39,5 +39,6 @@ To use with multiple servers, use an instance per server.
 ```bash
 docker run -d -v "$PWD":/config:ro ascensive/irc-url-title-bot
 ```
+To auto-restart the container when the host restarts, include the `--restart always` option in the above command.
 To view and follow the logs, use `docker logs`.
-To rerun the newly created container in the future, use `docker start` instead.
+To rerun the newly created container in the future, refer to the container by its assigned name.
