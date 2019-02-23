@@ -103,6 +103,10 @@ def _handle_titles(channel: str) -> NoReturn:
             if result is None:
                 continue
             irc, user, url, title = result
+            if title.casefold() in config.SKIP_TITLES:
+                alert = f'Skipping title "{title}" for {user} in {channel} for URL {url}'
+                _alert(irc, alert, logging.INFO)
+                continue
             msg = f'{title_prefix} {title}'
             irc.msg(channel, msg)
             log.info('Sent outgoing message for %s in %s in %.1fs having content "%s" for URL %s with %s '
