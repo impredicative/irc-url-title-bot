@@ -24,6 +24,9 @@ def main() -> None:
 
     # Process user config
     instance_config['nick:casefold'] = instance_config['nick'].casefold()
+    instance_config['alerts_channel'] = f'##{instance_config["nick"]}-alerts'
+    if instance_config['alerts_channel'] not in instance_config['channels']:
+        instance_config['channels'].append(instance_config['alerts_channel'])
     instance_config['channels:casefold'] = [channel.casefold() for channel in instance_config['channels']]
     instance_config['ignores:casefold'] = [ignore.casefold() for ignore in instance_config['ignores']]
     config.INSTANCE = instance_config

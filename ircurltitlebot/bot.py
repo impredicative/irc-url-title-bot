@@ -49,6 +49,7 @@ class Bot:
     def serve(self) -> NoReturn:  # type: ignore
         log.debug('Serving bot.')
         instance = config.INSTANCE
+        log.info('Alerts will be sent to %s.', instance['alerts_channel'])
         IRC(ip=instance['host'],
             port=instance['ssl_port'],
             nick=instance['nick'],
@@ -60,19 +61,26 @@ class Bot:
             )
 
 
+def _alert(irc: IRC, msg: str, loglevel: int = logging.ERROR) -> None:
+    log.log(loglevel, msg)
+    irc.msg(config.INSTANCE['alerts_channel'], msg)
+
+
 def _handle_url(irc: IRC, channel: str, user: str, url: str) -> Optional[Tuple[IRC, str, str, str]]:  # type: ignore
     start_time = monotonic()
     try:
         title = url_title_reader.title(url)
     except Exception as exc:
-        log.error('Error retrieving title from URL %s in message from %s in %s in %.1fs: %s',
-                  url, user, channel, monotonic() - start_time, exc)
+        time_used = monotonic() - start_time
+        alert = f'Error retrieving title for URL {url} in message from {user} in {channel} in {time_used:.1f}s: {exc}'
         if url.endswith(PUNCTUATION):
-            log.info('Because the URL "%s" ends with a punctuation, and because there was an error retrieving its '
-                     'title, its last character "%s" will be stripped and it will be reattempted.', url, url[-1])
+            period = '' if alert.endswith('.') else '.'
+            alert += f'{period} It will be reattempted with its last punctuation character "{url[-1]}" stripped.'
+        _alert(irc, alert)
+        if url.endswith(PUNCTUATION):
             return _handle_url(irc, channel, user, url[:-1])
     else:
-        log.debug('Returning title "%s" from URL %s in message from %s in %s in %.1fs.',
+        log.debug('Returning title "%s" for URL %s in message from %s in %s in %.1fs.',
                   title, url, user, channel, monotonic() - start_time)
         return irc, user, url, title
 
@@ -90,6 +98,7 @@ def _handle_titles(channel: str) -> NoReturn:
             result = url_future.result(timeout=title_timeout)
         except concurrent.futures.TimeoutError:
             log.error('Result timed out after %.1fs.', monotonic() - start_time)
+            # Note: An IRC object is not reliably available here with which to call `_alert`.
         else:
             if result is None:
                 continue
@@ -116,15 +125,14 @@ def _handle_msg(irc: IRC, hostmask: Tuple[str, str, str], args: List[str]) -> No
         return
     if channel.casefold() not in config.INSTANCE['channels:casefold']:
         assert channel.casefold() == config.INSTANCE['nick:casefold']
-        log.warning('Ignoring incoming private message from %s having content: %s', user, msg)
+        _alert(irc, f'Ignoring private message from {user}: {msg}', logging.WARNING)
         return
 
     # Extract URLs
     try:
         urls = url_extractor.find_urls(msg, only_unique=False)  # Assumes returned URLs have same order as in message.
     except Exception as exc:
-        log.error('Error extracting URLs in message from %s in %s having content "%s". The error is: %s',
-                  user, channel, msg, exc)
+        _alert(irc, f'Error extracting URLs in message from {user} in {channel}: "{msg}". The error is: {exc}')
         return
 
     # Filter URLs

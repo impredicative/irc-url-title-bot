@@ -13,7 +13,7 @@ due to a number of factors.
 <Adam> For image super-resolution, see https://arxiv.org/abs/1902.06068, and for more reviews see https://j.mp/ml-reviews.
 <Title[bot]> ⤷ [1902.06068] Deep Learning for Image Super-resolution: A Survey
 <Title[bot]> ⤷ Review articles | freenode-machinelearning.github.io
-<Eve> scholar.google.com and semanticscholar.org list academic articles.
+<Eve> Thanks. Is github.com/visinf/n3net a good project? I've been reading www.greenteapress.com/thinkpython/thinkpython.pdf...
 <Title[bot]> ⤷ Google Scholar
 <Title[bot]> ⤷ Semantic Scholar - An academic search engine for scientific articles
 ```
@@ -33,6 +33,11 @@ To use with multiple servers, use an instance per server.
   "ignores": ["some_user"]
 }
 ```
+
+* Some but not all warning and error alerts are sent to `##{nick}-alerts`.
+For example, if the nick is `Title[bot]`, these alerts will be sent to `##Title[bot]-alerts`.
+It is recommended that the alerts channel be registered even if it is not monitored.
+
 * It is recommended that the bot be auto-voiced (+V) in each channel.
 
 * To run the bot as a Docker container, change to the directory containing the configured `config.json` file, and run:
@@ -42,3 +47,5 @@ docker run -d --restart always -v "$PWD":/config:ro ascensive/irc-url-title-bot
 As is usual for Docker:
 * To view and follow the logs, use `docker logs`.
 * To rerun the newly created container in the future, refer to the container by its assigned name.
+
+If the configuration is updated, the bot must be restarted to use the updated configuration.
