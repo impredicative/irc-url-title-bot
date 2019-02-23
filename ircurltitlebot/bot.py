@@ -72,7 +72,8 @@ def _handle_url(irc: IRC, channel: str, user: str, url: str) -> Optional[Tuple[I
         title = url_title_reader.title(url)
     except Exception as exc:
         time_used = monotonic() - start_time
-        alert = f'Error retrieving title for URL {url} in message from {user} in {channel} in {time_used:.1f}s: {exc}'
+        alert = f'Error retrieving title for URL in message from {user} in {channel} in {time_used:.1f}s: {exc}'
+        # Note: exc almost always includes the actual URL, so it need not be duplicated in the alert.
         if url.endswith(PUNCTUATION):
             period = '' if alert.endswith('.') else '.'
             alert += f'{period} It will however be reattempted with its trailing punctuation character "{url[-1]}" ' \
