@@ -19,6 +19,8 @@ due to a number of factors.
 ```
 For more examples, see [`urltitle`](https://github.com/impredicative/urltitle/).
 ## Usage
+The bot can work in multiple channels but on only one server.
+To use with multiple servers, use an instance per server.
 
 * Prepare a `config.json` file using the sample below. All keys are mandatory.
 ```json
