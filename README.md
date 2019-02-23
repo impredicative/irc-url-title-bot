@@ -44,6 +44,7 @@ It is recommended that the alerts channel be registered even if it is not monito
 ```bash
 docker run -d --restart always -v "$PWD":/config:ro ascensive/irc-url-title-bot
 ```
+
 As is usual for Docker:
 * To view and follow the logs, use `docker logs`.
 * To rerun the newly created container in the future, refer to the container by its assigned name.
