@@ -42,7 +42,7 @@ It is recommended that the alerts channel be registered even if it is not monito
 
 * To run the bot as a Docker container, change to the directory containing the configured `config.json` file, and run:
 ```bash
-docker run -d --restart always -v "$PWD":/config:ro ascensive/irc-url-title-bot
+docker run --name irc-url-title-bot -d --restart always -v "$PWD":/config:ro ascensive/irc-url-title-bot
 ```
 
 As is usual for Docker:
