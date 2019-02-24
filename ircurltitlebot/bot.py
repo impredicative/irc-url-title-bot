@@ -6,6 +6,7 @@ import threading
 from time import monotonic
 # noinspection PyUnresolvedReferences
 from queue import SimpleQueue  # type: ignore
+import subprocess
 from typing import Dict, List, NoReturn, Tuple, Optional
 from urllib.parse import urlparse
 
@@ -27,7 +28,7 @@ class Bot:
     QUEUES: Dict[str, SimpleQueue] = {}
 
     def __init__(self) -> None:
-        log.debug('Initializing bot.')
+        log.info('Initializing bot as: %s', subprocess.check_output('id', text=True).rstrip())
 
         # Setup channels
         channels = config.INSTANCE['channels']
