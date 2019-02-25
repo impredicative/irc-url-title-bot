@@ -40,13 +40,10 @@ It is recommended that the alerts channel be registered even if it is not monito
 
 * It is recommended that the bot be auto-voiced (+V) in each channel.
 
-* To run the bot as a Docker container, change to the directory containing the configured `config.json` file, and run:
+* To run the bot as a Docker container for the first time, change to the directory containing the configured
+`config.json` file, and run:
 ```bash
 docker run --name irc-url-title-bot -d --restart always -v "$PWD":/config:ro ascensive/irc-url-title-bot
 ```
-
-As is usual for Docker:
-* To view and follow the logs, use `docker logs`.
-* To rerun the newly created container in the future, refer to the container by its assigned name.
 
 If the configuration is updated, the bot must be restarted to use the updated configuration.
