@@ -8,3 +8,4 @@ RUN groupadd -g 999 app && \
 USER app
 ENTRYPOINT ["python", "-m", "ircurltitlebot"]
 CMD ["--config-path", "/config/config.json"]
+STOPSIGNAL SIGINT
