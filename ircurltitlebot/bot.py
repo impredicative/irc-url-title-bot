@@ -11,16 +11,15 @@ from typing import Dict, List, NoReturn, Tuple, Optional
 from urllib.parse import urlparse
 
 from miniirc import Handler as IRCHandler, IRC
-from urltitle import URLTitleReader
 from urlextract import URLExtract
 
 from . import config
+from .title import url_title_reader
 
 PUNCTUATION = tuple(string.punctuation)
 
 log = logging.getLogger(__name__)
 url_extractor = URLExtract()
-url_title_reader = URLTitleReader(verify_ssl=False)
 
 
 class Bot:
