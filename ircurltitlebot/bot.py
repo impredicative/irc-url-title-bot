@@ -120,7 +120,7 @@ def _handle_titles(channel: str) -> NoReturn:
 def _handle_msg(irc: IRC, hostmask: Tuple[str, str, str], args: List[str]) -> None:
     # Parse message
     log.debug('Handling incoming message: hostmask=%s, args=%s', hostmask, args)
-    user, _ident, _hostname = hostmask
+    user, ident, hostname = hostmask
     channel = args[0]
     msg = args[-1]
     assert msg.startswith(':')
@@ -131,7 +131,8 @@ def _handle_msg(irc: IRC, hostmask: Tuple[str, str, str], args: List[str]) -> No
         return
     if channel.casefold() not in config.INSTANCE['channels:casefold']:
         assert channel.casefold() == config.INSTANCE['nick:casefold']
-        _alert(irc, f'Ignoring private message from {user}: {msg}', logging.WARNING)
+        _alert(irc, f'Ignoring private message from {user} having ident {ident} and hostname {hostname}: {msg}',
+               logging.WARNING)
         return
 
     # Extract URLs
