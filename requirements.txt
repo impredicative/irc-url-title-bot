@@ -13,8 +13,8 @@ humanize==0.5.1           # via urltitle
 idna==2.8                 # via urlextract
 lxml==4.3.1               # via pikepdf
 miniirc==1.0.6
-pikepdf==1.0.5            # via urltitle
+pikepdf==1.1.0            # via urltitle
 soupsieve==1.8            # via beautifulsoup4
 uritools==2.2.0           # via urlextract
 urlextract==0.9
-urltitle==0.1.7
+urltitle==0.1.8
