@@ -55,7 +55,7 @@ services:
         max-size: 10m
         max-file: "3"
     volumes:
-      - ./irc-url-title-bot/prod:/config:ro
+      - ./irc-url-title-bot:/config:ro
 ```
 In the YAML, customize the relative path, e.g. `./irc-url-title-bot/prod` of the volume source.
 This should be the directory containing `config.json`.
