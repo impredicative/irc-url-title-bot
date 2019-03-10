@@ -12,7 +12,7 @@ defusedxml==0.5.0         # via pikepdf
 humanize==0.5.1           # via urltitle
 idna==2.8                 # via urlextract
 lxml==4.3.1               # via pikepdf
-miniirc==1.0.6
+miniirc==1.0.9
 pikepdf==1.1.0            # via urltitle
 soupsieve==1.8            # via beautifulsoup4
 uritools==2.2.0           # via urlextract
