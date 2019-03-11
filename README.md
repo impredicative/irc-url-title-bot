@@ -60,7 +60,7 @@ services:
     volumes:
       - ./irc-url-title-bot:/config:ro
 ```
-In the YAML, customize the relative path, e.g. `./irc-url-title-bot/prod` of the volume source.
+In the YAML, customize the relative path, e.g. `./irc-url-title-bot` of the volume source.
 This should be the directory containing `config.json`.
 
 From the directory containing the above YAML file, run `docker-compose up -d`.
