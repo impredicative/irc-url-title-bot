@@ -29,10 +29,12 @@ To use with multiple servers, use an instance per server.
   "ssl_port": 6697,
   "nick": "Title[bot]",
   "nick_password": "the_correct_password",
+  "mode": "",
   "channels": ["#some_chan1", "#some_chan2"],
   "ignores": ["some_user"]
 }
 ```
+The `mode` can for example be `+igR` for [Freenode](https://freenode.net/kb/answer/usermodes) and this is recommended.
 
 * Some but not all warning and error alerts are sent to `##{nick}-alerts`.
 For example, if the nick is `Title[bot]`, these alerts will be sent to `##Title[bot]-alerts`.
