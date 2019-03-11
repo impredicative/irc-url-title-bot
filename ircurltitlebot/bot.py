@@ -57,6 +57,7 @@ class Bot:
             ssl=True,
             debug=False,
             ns_identity=f"{instance['nick']} {instance['nick_password']}",
+            connect_modes=instance['mode'],
             quit_message='',
             )
 
