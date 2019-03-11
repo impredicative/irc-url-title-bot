@@ -23,6 +23,8 @@ The bot can work in multiple channels but on only one server.
 To use with multiple servers, use an instance per server.
 
 * Prepare a private but version-controlled `config.json` file using the sample below. All keys are mandatory.
+The `mode` can for example be `+igR` for [Freenode](https://freenode.net/kb/answer/usermodes) and setting it is
+recommended.
 ```json
 {
   "host": "chat.freenode.net",
@@ -34,7 +36,6 @@ To use with multiple servers, use an instance per server.
   "ignores": ["some_user"]
 }
 ```
-The `mode` can for example be `+igR` for [Freenode](https://freenode.net/kb/answer/usermodes) and this is recommended.
 
 * Some but not all warning and error alerts are sent to `##{nick}-alerts`.
 For example, if the nick is `Title[bot]`, these alerts will be sent to `##Title[bot]-alerts`.
