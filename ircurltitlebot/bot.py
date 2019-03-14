@@ -1,6 +1,7 @@
 import concurrent.futures
 from itertools import groupby
 import logging
+import re
 import string
 import threading
 from time import monotonic
@@ -144,9 +145,8 @@ def _handle_msg(irc: IRC, hostmask: Tuple[str, str, str], args: List[str]) -> No
         return
 
     # Filter URLs
-    # Note: Due to a bug in urlextract==0.9, a URL can erroneously be returned twice. Refer to https://git.io/fhFLJ
-    urls = [url[0] for url in groupby(urls)]  # Guarantees consecutive uniqueness as a workaround for above bug.
-    # urls = list(dict.fromkeys(urls))  # Guarantees uniqueness while preserving ordering.
+    urls = [url[0] for url in groupby(urls)]  # Guarantees consecutive uniqueness. https://git.io/fjeWl
+    urls = [url for url in urls if not re.fullmatch(r'[^@]+@[^@]+\.[^@]+', url)]  # Skips emails. https://git.io/fjeW3
     urls = [url for url in urls if urlparse(url).scheme != 'file']  # Safety check independently of urlextract.
     if urls:
         urls_str = ', '.join(urls)
