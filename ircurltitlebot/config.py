@@ -12,7 +12,12 @@ def configure_logging() -> None:
 INSTANCE: Dict = {}  # Set from JSON config file.
 MAX_WORKERS_PER_CHANNEL = 3
 PACKAGE_NAME = Path(__file__).parent.stem
-SKIP_TITLES = {'untitled', 'invalid host', 'bloomberg - are you a robot?'}  # Must be lowercase.
+SKIP_TITLES = {  # Must be lowercase.
+    'Bloomberg - Are you a robot?'.lower(),
+    'Imgur: The magic of the Internet'.lower(),
+    'invalid host',
+    'untitled',
+}
 TITLE_PREFIX = '⤷'
 TITLE_TIMEOUT = 60
 
