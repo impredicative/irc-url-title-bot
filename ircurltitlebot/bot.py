@@ -29,8 +29,11 @@ class Bot:
 
     def __init__(self) -> None:
         log.info('Initializing bot as: %s', subprocess.check_output('id', text=True).rstrip())
+        config.SKIP_TITLES = {title.casefold() for title in config.SKIP_TITLES}
+        self._setup_channels()
+        log.info('Alerts will be sent to %s.', config.INSTANCE['alerts_channel'])
 
-        # Setup channels
+    def _setup_channels(self) -> None:
         channels = config.INSTANCE['channels']
         channels_str = ', '.join(channels)
         active_count = threading.active_count
@@ -50,7 +53,6 @@ class Bot:
     def serve(self) -> NoReturn:  # type: ignore
         log.debug('Serving bot.')
         instance = config.INSTANCE
-        log.info('Alerts will be sent to %s.', instance['alerts_channel'])
         IRC(ip=instance['host'],
             port=instance['ssl_port'],
             nick=instance['nick'],
