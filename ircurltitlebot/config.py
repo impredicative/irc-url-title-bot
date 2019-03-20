@@ -13,8 +13,8 @@ INSTANCE: Dict = {}  # Set from JSON config file.
 MAX_WORKERS_PER_CHANNEL = 3
 PACKAGE_NAME = Path(__file__).parent.stem
 SKIP_TITLES = {  # Comparison is case-insensitive.
-    'Bloomberg - Are you a robot?'
-    'Imgur: The magic of the Internet'
+    'Bloomberg - Are you a robot?',
+    'Imgur: The magic of the Internet',
     'Invalid host',
     'Untitled',
 }
