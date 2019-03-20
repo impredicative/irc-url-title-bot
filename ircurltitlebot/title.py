@@ -33,6 +33,11 @@ class URLTitleReader:
                 if title != format_params['title']:
                     log.info('Substituted title "%s" with "%s".', format_params['title'], title)
 
+        # Handle blacklisted title as configured
+        if title in overrides.get('title_blacklist', {}):
+            log.info('Replaced blacklisted title "%s" with an empty title.', title)
+            title = ''
+
         return title
 
 

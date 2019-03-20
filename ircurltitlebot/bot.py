@@ -29,7 +29,7 @@ class Bot:
 
     def __init__(self) -> None:
         log.info('Initializing bot as: %s', subprocess.check_output('id', text=True).rstrip())
-        config.SKIP_TITLES = {title.casefold() for title in config.SKIP_TITLES}
+        config.TITLE_BLACKLIST = {title.casefold() for title in config.TITLE_BLACKLIST}
         self._setup_channels()
         log.info('Alerts will be sent to %s.', config.INSTANCE['alerts_channel'])
 
@@ -109,7 +109,7 @@ def _handle_titles(channel: str) -> NoReturn:
             if result is None:
                 continue
             irc, user, url, title = result
-            if title.casefold() in config.SKIP_TITLES:
+            if title.casefold() in config.TITLE_BLACKLIST:
                 alert = f'Skipping title "{title}" for {user} in {channel} for URL {url}'
                 _alert(irc, alert, logging.INFO)
                 continue

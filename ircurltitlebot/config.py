@@ -12,9 +12,8 @@ def configure_logging() -> None:
 INSTANCE: Dict = {}  # Set from JSON config file.
 MAX_WORKERS_PER_CHANNEL = 3
 PACKAGE_NAME = Path(__file__).parent.stem
-SKIP_TITLES = {  # Comparison is case-insensitive.
-    'Bloomberg - Are you a robot?',
-    'Imgur: The magic of the Internet',
+TITLE_BLACKLIST = {  # Comparison is case-insensitive.
+    '',
     'Invalid host',
     'Untitled',
 }
@@ -59,6 +58,8 @@ NETLOC_OVERRIDES = {  # Site-specific overrides (w/o www prefix) as condition-ac
                                   '{title} | https://arxiv.org/abs/{url_id}'),
                                  ({'url': r'/abs/(?P<url_id>.+?)$'},
                                   '{title} | https://arxiv.org/pdf/{url_id}')]},
+    'bloomberg.com': {'title_blacklist': {'Bloomberg - Are you a robot?'}},
+    'imgur.com': {'title_blacklist': {'Imgur: The magic of the Internet'}},
 }
 
 configure_logging()
