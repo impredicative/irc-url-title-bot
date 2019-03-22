@@ -20,7 +20,7 @@ class URLTitleReader:
         overrides = cast(Dict, overrides)
         title = self._url_title_reader.title(url)
 
-        # Substitute title as configured
+        # Substitute title
         for condition_dict, title_format in overrides.get('title_subs', []):
             format_params = {'url': url, 'title': title}
             for condition_key, condition_val in condition_dict.items():
@@ -33,9 +33,9 @@ class URLTitleReader:
                 if title != format_params['title']:
                     log.info('Substituted title "%s" with "%s".', format_params['title'], title)
 
-        # Handle blacklisted title as configured
-        if title in overrides.get('title_blacklist', {}):
-            log.info('Replaced blacklisted title "%s" with an empty title.', title)
+        # Handle blacklisted title
+        if title in overrides.get('title_blacklist', set()):
+            log.info('Replaced blacklisted title "%s" for %s with an empty title.', title, netloc)
             title = ''
 
         return title

@@ -110,8 +110,7 @@ def _handle_titles(channel: str) -> NoReturn:
                 continue
             irc, user, url, title = result
             if title.casefold() in config.TITLE_BLACKLIST:
-                alert = f'Skipping title "{title}" for {user} in {channel} for URL {url}'
-                _alert(irc, alert, logging.INFO)
+                log.info('Skipping blacklisted title %s for %s in %s for URL %', title, user, channel, url)
                 continue
             msg = f'{title_prefix} {title}'
             irc.msg(channel, msg)
