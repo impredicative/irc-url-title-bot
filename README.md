@@ -64,5 +64,6 @@ In the YAML, customize the relative path, e.g. `./irc-url-title-bot` of the volu
 This should be the directory containing `config.json`.
 
 From the directory containing the above YAML file, run `docker-compose up -d irc-url-title-bot`.
+Use `docker logs -f irc-url-title-bot` to see and follow informational logs.
 
 If `config.json` is updated, the container must be restarted to use the updated file.
