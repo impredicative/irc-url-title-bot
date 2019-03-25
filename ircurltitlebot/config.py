@@ -9,9 +9,11 @@ def configure_logging() -> None:
     log.debug('Logging is configured.')
 
 
-INSTANCE: Dict = {}  # Set from JSON config file.
-MAX_WORKERS_PER_CHANNEL = 3
+INSTANCE: Dict = {}  # Set from YAML config file.
 PACKAGE_NAME = Path(__file__).parent.stem
+
+ALERTS_CHANNEL_FORMAT_DEFAULT = '##{nick}-alerts'
+MAX_WORKERS_PER_CHANNEL = 3
 TITLE_BLACKLIST = {  # Comparison is case-insensitive.
     '',
     'Invalid host',

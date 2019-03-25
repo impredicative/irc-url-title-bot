@@ -18,29 +18,55 @@ due to a number of factors.
 <Title[bot]> ⤷ Python Tutorial
 ```
 For more examples, see [`urltitle`](https://github.com/impredicative/urltitle/).
+
 ## Usage
 The bot can work in multiple channels but on only one server.
 To use with multiple servers, use an instance per server.
 
-* Prepare a private but version-controlled `config.json` file using the sample below. All keys are mandatory.
+### Configuration
+* Prepare a private but version-controlled `config.yaml` file using the sample below.
+
 The `mode` can for example be `+igR` for [Freenode](https://freenode.net/kb/answer/usermodes) and setting it is
 recommended.
-```json
-{
-  "host": "chat.freenode.net",
-  "ssl_port": 6697,
-  "nick": "Title[bot]",
-  "nick_password": "the_correct_password",
-  "mode": "",
-  "channels": ["#some_chan1", "#some_chan2"],
-  "ignores": ["some_user"]
-}
+```yaml
+# Mandatory:
+host: chat.freenode.net
+ssl_port: 6697
+nick: "MyTitle[bot]"
+nick_password: "the_correct_password"
+channels:
+  - '#some_chan1'
+  - '##some_chan2'
+
+# Optional:
+alerts_channel: '##mybot-alerts'
+mode:
+ignores:
+  - some_user1
+  - some_user2
 ```
 
-* Some but not all warning and error alerts are sent to `##{nick}-alerts`.
-For example, if the nick is `Title[bot]`, these alerts will be sent to `##Title[bot]-alerts`.
-It is recommended that the alerts channel be registered even if it is not monitored.
+#### Global settings
 
+##### Mandatory
+* **`host`**
+* **`ssl_port`**
+* **`nick`**
+* **`nick_password`**
+* **`channels`**
+
+##### Optional
+* **`alerts_channel`**: Some but not all warning and error alerts are sent to the this channel.
+Its default value is `##{nick}-alerts`. The key `{nick}`, if present in the value, is formatted with the actual nick.
+For example, if the nick is `MyFeed[bot]`, alerts will by default be sent to `##MyFeed[bot]-alerts`.
+Since a channel name starts with #, the name if provided **must be quoted**.
+It is recommended that the alerts channel be registered and monitored.
+* **`mode`**: This can for example be `+igR` for [Freenode](https://freenode.net/kb/answer/usermodes).
+Setting it is recommended.
+* **`ignores`**
+
+### Deployment
+* As a reminder, it is recommended that the alerts channel be registered and monitored.
 * It is recommended that the bot be auto-voiced (+V) in each channel.
 
 * It is recommended that the bot be run as a Docker container using using Docker ≥18.09.2, possibly with
@@ -61,9 +87,10 @@ services:
       - ./irc-url-title-bot:/config:ro
 ```
 In the YAML, customize the relative path, e.g. `./irc-url-title-bot` of the volume source.
-This should be the directory containing `config.json`.
+This should be the directory containing `config.yaml`.
 
 From the directory containing the above YAML file, run `docker-compose up -d irc-url-title-bot`.
 Use `docker logs -f irc-url-title-bot` to see and follow informational logs.
 
-If `config.json` is updated, the container must be restarted to use the updated file.
+### Maintenance
+If `config.yaml` is updated, the container must be restarted to use the updated file.

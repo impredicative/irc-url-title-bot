@@ -7,5 +7,5 @@ RUN groupadd -g 999 app && \
     useradd -r -m -u 999 -g app app
 USER app
 ENTRYPOINT ["python", "-m", "ircurltitlebot"]
-CMD ["--config-path", "/config/config.json"]
+CMD ["--config-path", "/config/config.yaml"]
 STOPSIGNAL SIGINT

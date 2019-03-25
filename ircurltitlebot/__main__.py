@@ -2,6 +2,8 @@ import argparse
 import logging
 import json
 
+from ruamel.yaml import YAML
+
 from ircurltitlebot import Bot, config
 
 log = logging.getLogger(__name__)
@@ -15,20 +17,26 @@ def main() -> None:
 
     # Read user config
     log.debug('Reading instance configuration file %s', instance_config_path)
-    with open(instance_config_path) as instance_config_file:
-        instance_config = json.load(instance_config_file)
+    instance_config = YAML().load(instance_config_path)
+    instance_config = json.loads(json.dumps(instance_config))  # Recursively use a dict as the data structure.
+
+    # Log user config
     logged_instance_config = instance_config.copy()
     del logged_instance_config['nick_password']
     log.info('Read user configuration file "%s" having configuration: %s',
              instance_config_path, json.dumps(logged_instance_config))
 
-    # Process user config
-    instance_config['nick:casefold'] = instance_config['nick'].casefold()
-    instance_config['alerts_channel'] = f'##{instance_config["nick"]}-alerts'
+    # Set alerts channel
+    if 'alerts_channel' not in instance_config:
+        instance_config['alerts_channel'] = config.ALERTS_CHANNEL_FORMAT_DEFAULT
+    instance_config['alerts_channel'] = instance_config['alerts_channel'].format(nick=instance_config['nick'])
     if instance_config['alerts_channel'] not in instance_config['channels']:
         instance_config['channels'].append(instance_config['alerts_channel'])
+
+    # Process user config
+    instance_config['nick:casefold'] = instance_config['nick'].casefold()
     instance_config['channels:casefold'] = [channel.casefold() for channel in instance_config['channels']]
-    instance_config['ignores:casefold'] = [ignore.casefold() for ignore in instance_config['ignores']]
+    instance_config['ignores:casefold'] = [ignore.casefold() for ignore in instance_config.get('ignores', [])]
     config.INSTANCE = instance_config
 
     # Start bot
