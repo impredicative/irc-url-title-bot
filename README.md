@@ -25,9 +25,6 @@ To use with multiple servers, use an instance per server.
 
 ### Configuration
 * Prepare a private but version-controlled `config.yaml` file using the sample below.
-
-The `mode` can for example be `+igR` for [Freenode](https://freenode.net/kb/answer/usermodes) and setting it is
-recommended.
 ```yaml
 # Mandatory:
 host: chat.freenode.net
