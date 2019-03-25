@@ -24,7 +24,7 @@ The bot can work in multiple channels but on only one server.
 To use with multiple servers, use an instance per server.
 
 ### Configuration
-* Prepare a private but version-controlled `config.yaml` file using the sample below.
+Prepare a private but version-controlled `config.yaml` file using the sample below.
 ```yaml
 # Mandatory:
 host: chat.freenode.net
