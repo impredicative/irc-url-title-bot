@@ -60,7 +60,7 @@ Since a channel name starts with #, the name if provided **must be quoted**.
 It is recommended that the alerts channel be registered and monitored.
 * **`mode`**: This can for example be `+igR` for [Freenode](https://freenode.net/kb/answer/usermodes).
 Setting it is recommended.
-* **`ignores`** This is a list of nicks to ignore.
+* **`ignores`**: This is a list of nicks to ignore.
 
 ### Deployment
 * As a reminder, it is recommended that the alerts channel be registered and monitored.
