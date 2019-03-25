@@ -29,8 +29,8 @@ Prepare a private but version-controlled `config.yaml` file using the sample bel
 # Mandatory:
 host: chat.freenode.net
 ssl_port: 6697
-nick: "MyTitle[bot]"
-nick_password: "the_correct_password"
+nick: MyTitle[bot]
+nick_password: the_correct_password
 channels:
   - '#some_chan1'
   - '##some_chan2'
