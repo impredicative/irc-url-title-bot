@@ -55,7 +55,7 @@ ignores:
 ##### Optional
 * **`alerts_channel`**: Some but not all warning and error alerts are sent to the this channel.
 Its default value is `##{nick}-alerts`. The key `{nick}`, if present in the value, is formatted with the actual nick.
-For example, if the nick is `MyFeed[bot]`, alerts will by default be sent to `##MyFeed[bot]-alerts`.
+For example, if the nick is `MyTitle[bot]`, alerts will by default be sent to `##MyTitle[bot]-alerts`.
 Since a channel name starts with #, the name if provided **must be quoted**.
 It is recommended that the alerts channel be registered and monitored.
 * **`mode`**: This can for example be `+igR` for [Freenode](https://freenode.net/kb/answer/usermodes).
