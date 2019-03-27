@@ -38,10 +38,17 @@ def main() -> None:
     instance_config['nick:casefold'] = instance_config['nick'].casefold()
     instance_config['channels:casefold'] = [channel.casefold() for channel in instance_config['channels']]
     instance_config['ignores:casefold'] = [ignore.casefold() for ignore in instance_config.get('ignores', [])]
+
+    # Process blacklist
+    blacklists = instance_config['blacklist'] = instance_config.get('blacklist', {})
+    blacklists['title'] = set(blacklists.get('title', set()))
+    blacklists['title'] = {entry.casefold() for entry in blacklists['title']}
+    blacklists['url'] = set(blacklists.get('url', set()))
+
     config.INSTANCE = instance_config
 
     # Start bot
-    Bot().serve()
+    Bot()
 
 
 if __name__ == '__main__':

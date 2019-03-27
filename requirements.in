@@ -1,4 +1,4 @@
-miniirc==1.0.9
+miniirc==1.1.2
 ruamel.yaml==0.15.89
 urlextract==0.9
-urltitle==0.2.4
+urltitle==0.2.5

@@ -1,6 +1,6 @@
 import logging
 import re
-from typing import cast, Dict
+from typing import cast, Dict, Optional
 
 import urltitle
 
@@ -14,7 +14,7 @@ class URLTitleReader:
     def __init__(self) -> None:
         self._url_title_reader = urltitle.URLTitleReader(verify_ssl=False)
 
-    def title(self, url: str) -> str:
+    def title(self, url: str) -> Optional[str]:
         netloc = self._url_title_reader.netloc(url)
         overrides = config.NETLOC_OVERRIDES.get(netloc, {})
         overrides = cast(Dict, overrides)
@@ -35,8 +35,8 @@ class URLTitleReader:
 
         # Handle blacklisted title
         if title in overrides.get('title_blacklist', set()):
-            log.info('Replaced blacklisted title "%s" for %s with an empty title.', title, netloc)
-            title = ''
+            log.info('Skipping blacklisted title %s for netloc %s.', repr(title), netloc)
+            return None
 
         return title
 

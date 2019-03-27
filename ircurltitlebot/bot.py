@@ -1,18 +1,18 @@
 import concurrent.futures
-from itertools import groupby
+import itertools
 import logging
 import re
 import string
 import threading
-from time import monotonic
+import time
 # noinspection PyUnresolvedReferences
-from queue import SimpleQueue  # type: ignore
+import queue
 import subprocess
 from typing import Dict, List, NoReturn, Tuple, Optional
 from urllib.parse import urlparse
 
-from miniirc import Handler as IRCHandler, IRC
-from urlextract import URLExtract
+import miniirc
+import urlextract
 
 from . import config
 from .title import url_title_reader
@@ -20,40 +20,26 @@ from .title import url_title_reader
 PUNCTUATION = tuple(string.punctuation)
 
 log = logging.getLogger(__name__)
-url_extractor = URLExtract()
+url_extractor = urlextract.URLExtract()
+
+
+def _alert(irc: miniirc.IRC, msg: str, loglevel: int = logging.ERROR) -> None:
+    log.log(loglevel, msg)
+    irc.msg(config.INSTANCE['alerts_channel'], msg)
 
 
 class Bot:
     EXECUTORS: Dict[str, concurrent.futures.ThreadPoolExecutor] = {}
-    QUEUES: Dict[str, SimpleQueue] = {}
+    QUEUES: Dict[str, queue.SimpleQueue] = {}  # type: ignore
 
     def __init__(self) -> None:
         log.info('Initializing bot as: %s', subprocess.check_output('id', text=True).rstrip())
-        config.TITLE_BLACKLIST = {title.casefold() for title in config.TITLE_BLACKLIST}
-        self._setup_channels()
-        log.info('Alerts will be sent to %s.', config.INSTANCE['alerts_channel'])
-
-    def _setup_channels(self) -> None:
-        channels = config.INSTANCE['channels']
-        channels_str = ', '.join(channels)
-        active_count = threading.active_count
-        log.debug('Setting up threads and queues for %s channels (%s) with %s currently active threads.',
-                  len(channels), channels_str, active_count())
-        for channel in channels:
-            log.debug('Setting up threads and queue for %s.', channel)
-            self.EXECUTORS[channel] = concurrent.futures.ThreadPoolExecutor(max_workers=config.MAX_WORKERS_PER_CHANNEL,
-                                                                            thread_name_prefix=f'URLHandler-{channel}')
-            self.QUEUES[channel] = SimpleQueue()
-            threading.Thread(target=_handle_titles, name=f'TitlesHandler-{channel}', args=(channel,)).start()
-            log.debug('Finished setting up threads and queue for %s with %s currently active threads.',
-                     channel, active_count())
-        log.info('Finished setting up threads and queues for %s channels (%s) with %s currently active threads.',
-                 len(channels), channels_str, active_count())
-
-    def serve(self) -> NoReturn:  # type: ignore
-        log.debug('Serving bot.')
         instance = config.INSTANCE
-        IRC(ip=instance['host'],
+        self._setup_channel_queues()  # Sets up executors and queues required by IRC handler.
+
+        log.debug('Initializing IRC client.')
+        self._irc = miniirc.IRC(
+            ip=instance['host'],
             port=instance['ssl_port'],
             nick=instance['nick'],
             channels=instance['channels'],
@@ -63,64 +49,99 @@ class Bot:
             connect_modes=instance.get('mode'),
             quit_message='',
             )
+        log.info('Initialized IRC client.')
+
+        self._setup_channel_threads()  # Threads require IRC client.
+        log.info('Alerts will be sent to %s.', config.INSTANCE['alerts_channel'])
+
+    def _msg_channel(self, channel: str) -> NoReturn:
+        instance = config.INSTANCE
+        irc = self._irc
+        channel_queue = Bot.QUEUES[channel]
+        title_timeout = config.TITLE_TIMEOUT
+        title_prefix = config.TITLE_PREFIX
+        title_blacklist = instance['blacklist']['title']
+        active_count = threading.active_count
+        log.debug('Starting titles handler for %s.', channel)
+        while True:
+            url_future = channel_queue.get()
+            start_time = time.monotonic()
+            try:
+                result = url_future.result(timeout=title_timeout)
+            except concurrent.futures.TimeoutError:
+                time_used = time.monotonic() - start_time
+                msg = f'Result for {channel} timed out after {time_used:.1f}s.'
+                _alert(irc, msg)
+            else:
+                if result is None:
+                    continue
+                user, url, title = result
+                if title.casefold() in title_blacklist:
+                    log.info('Skipping globally blacklisted title %s for %s in %s for URL %',
+                             repr(title), user, channel, url)
+                    continue
+                msg = f'{title_prefix} {title}'
+                irc.msg(channel, msg)
+                log.info('Sent outgoing message for %s in %s in %.1fs having content %s for URL %s with %s '
+                         'active threads.',
+                         user, channel, time.monotonic() - start_time, repr(msg), url, active_count())
+
+    def _setup_channel_queues(self) -> None:
+        channels = config.INSTANCE['channels']
+        channels_str = ', '.join(channels)
+        active_count = threading.active_count
+        log.debug('Setting up executor and queue for %s channels (%s) with %s currently active threads.',
+                  len(channels), channels_str, active_count())
+        for channel in channels:
+            log.debug('Setting up executor and queue for %s.', channel)
+            self.EXECUTORS[channel] = concurrent.futures.ThreadPoolExecutor(max_workers=config.MAX_WORKERS_PER_CHANNEL,
+                                                                            thread_name_prefix=f'TitleReader-{channel}')
+            self.QUEUES[channel] = queue.SimpleQueue()  # type: ignore
+            log.debug('Finished setting up executor and queue for %s with %s currently active threads.',
+                     channel, active_count())
+        log.info('Finished setting up executor and queue for %s channels (%s) with %s currently active threads.',
+                 len(channels), channels_str, active_count())
+
+    def _setup_channel_threads(self) -> None:
+        channels = config.INSTANCE['channels']
+        channels_str = ', '.join(channels)
+        active_count = threading.active_count
+        log.debug('Setting up thread for %s channels (%s) with %s currently active threads.',
+                  len(channels), channels_str, active_count())
+        for channel in channels:
+            threading.Thread(target=self._msg_channel, name=f'ChannelMessenger-{channel}', args=(channel,)).start()
+        log.info('Finished setting up thread for %s channels (%s) with %s currently active threads.',
+                 len(channels), channels_str, active_count())
 
 
-def _alert(irc: IRC, msg: str, loglevel: int = logging.ERROR) -> None:
-    log.log(loglevel, msg)
-    irc.msg(config.INSTANCE['alerts_channel'], msg)
-
-
-def _handle_url(irc: IRC, channel: str, user: str, url: str) -> Optional[Tuple[IRC, str, str, str]]:  # type: ignore
-    start_time = monotonic()
+def _get_title(irc: miniirc.IRC, channel: str, user: str, url: str) -> Optional[Tuple[str, str, str]]:  # type: ignore
+    start_time = time.monotonic()
     try:
         title = url_title_reader.title(url)
     except Exception as exc:
-        time_used = monotonic() - start_time
-        alert = f'Error retrieving title for URL in message from {user} in {channel} in {time_used:.1f}s: {exc}'
+        time_used = time.monotonic() - start_time
+        msg = f'Error retrieving title for URL in message from {user} in {channel} in {time_used:.1f}s: {exc}'
         # Note: exc almost always includes the actual URL, so it need not be duplicated in the alert.
         if url.endswith(PUNCTUATION):
-            period = '' if alert.endswith('.') else '.'
-            alert += f'{period} It will however be reattempted with its trailing punctuation character "{url[-1]}" ' \
-                     'stripped.'
-        _alert(irc, alert)
-        if url.endswith(PUNCTUATION):
-            return _handle_url(irc, channel, user, url[:-1])
-    else:
-        log.debug('Returning title "%s" for URL %s in message from %s in %s in %.1fs.',
-                  title, url, user, channel, monotonic() - start_time)
-        return irc, user, url, title
-
-
-def _handle_titles(channel: str) -> NoReturn:
-    queue = Bot.QUEUES[channel]
-    title_timeout = config.TITLE_TIMEOUT
-    title_prefix = config.TITLE_PREFIX
-    active_count = threading.active_count
-    log.debug('Starting titles handler for %s.', channel)
-    while True:
-        url_future = queue.get()
-        start_time = monotonic()
-        try:
-            result = url_future.result(timeout=title_timeout)
-        except concurrent.futures.TimeoutError:
-            log.error('Result timed out after %.1fs.', monotonic() - start_time)
-            # Note: An IRC object is not reliably available here with which to call `_alert`.
+            period = '' if msg.endswith('.') else '.'
+            msg += f'{period} It will however be reattempted with its trailing punctuation character "{url[-1]}" ' \
+                   'stripped.'
+            log.info(msg)
         else:
-            if result is None:
-                continue
-            irc, user, url, title = result
-            if title.casefold() in config.TITLE_BLACKLIST:
-                log.info('Skipping blacklisted title %s for %s in %s for URL %', title, user, channel, url)
-                continue
-            msg = f'{title_prefix} {title}'
-            irc.msg(channel, msg)
-            log.info('Sent outgoing message for %s in %s in %.1fs having content "%s" for URL %s with %s '
-                     'active threads.',
-                     user, channel, monotonic() - start_time, msg, url, active_count())
+            _alert(irc, msg)
+        if url.endswith(PUNCTUATION):
+            return _get_title(irc, channel, user, url[:-1])
+    else:
+        if title:  # Filter out None or blank title.
+            log.debug('Returning title "%s" for URL %s in message from %s in %s in %.1fs.',
+                      title, url, user, channel, time.monotonic() - start_time)
+            return user, url, title
+
+# Ref: https://tools.ietf.org/html/rfc1459
 
 
-@IRCHandler('PRIVMSG')
-def _handle_msg(irc: IRC, hostmask: Tuple[str, str, str], args: List[str]) -> None:
+@miniirc.Handler('PRIVMSG')
+def _handle_privmsg(irc: miniirc.IRC, hostmask: Tuple[str, str, str], args: List[str]) -> None:
     # Parse message
     log.debug('Handling incoming message: hostmask=%s, args=%s', hostmask, args)
     user, ident, hostname = hostmask
@@ -146,19 +167,21 @@ def _handle_msg(irc: IRC, hostmask: Tuple[str, str, str], args: List[str]) -> No
         return
 
     # Filter URLs
-    urls = [url[0] for url in groupby(urls)]  # Guarantees consecutive uniqueness. https://git.io/fjeWl
+    urls = [url[0] for url in itertools.groupby(urls)]  # Guarantees consecutive uniqueness. https://git.io/fjeWl
     urls = [url for url in urls if not re.fullmatch(r'[^@]+@[^@]+\.[^@]+', url)]  # Skips emails. https://git.io/fjeW3
     urls = [url for url in urls if urlparse(url).scheme != 'file']  # Safety check independently of urlextract.
+    urls = [url for url in urls if url not in config.INSTANCE['blacklist']['url']]
     if urls:
         urls_str = ', '.join(urls)
-        log.debug('Incoming message from %s in %s has %s URLs: %s', user, channel, len(urls), urls_str)
+        log.debug('Incoming message from %s in %s has %s URLs to process: %s',
+                  user, channel, len(urls), urls_str)
     else:
         return
 
     # Add jobs
-    executor = Bot.EXECUTORS[channel]
-    queue = Bot.QUEUES[channel]
+    channel_executor = Bot.EXECUTORS[channel]
+    channel_queue = Bot.QUEUES[channel]
     for url in urls:
-        url_future = executor.submit(_handle_url, irc, channel, user, url)
-        queue.put(url_future)
+        url_future = channel_executor.submit(_get_title, irc, channel, user, url)
+        channel_queue.put(url_future)
     log.debug('Queued %s URLs for message from %s in %s: %s', len(urls), user, channel, urls_str)

@@ -14,11 +14,6 @@ PACKAGE_NAME = Path(__file__).parent.stem
 
 ALERTS_CHANNEL_FORMAT_DEFAULT = '##{nick}-alerts'
 MAX_WORKERS_PER_CHANNEL = 3
-TITLE_BLACKLIST = {  # Comparison is case-insensitive.
-    '',
-    'Invalid host',
-    'Untitled',
-}
 TITLE_PREFIX = '⤷'
 TITLE_TIMEOUT = 60
 
@@ -26,8 +21,8 @@ LOGGING = {  # Ref: https://docs.python.org/3/howto/logging.html#configuring-log
     'version': 1,
     'formatters': {
         'detailed': {
-            'format': '%(asctime)s %(thread)x-%(threadName)s:%(name)s:%(lineno)d:%(funcName)s:%(levelname)s: %(message)s',
-        },
+            'format': '%(asctime)s %(levelname)s %(threadName)s:%(name)s:%(lineno)d:%(funcName)s: %(message)s',
+        },  # Note: Use %(thread)x- if needed for thread ID.
     },
     'handlers': {
         'console': {
