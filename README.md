@@ -44,10 +44,10 @@ blacklist:
   url:
     - model.fit
     - tf.app
-mode:
 ignores:
   - some_user1
   - some_user2
+mode:
 ```
 
 #### Global settings
@@ -69,9 +69,9 @@ It is recommended that the alerts channel be registered and monitored.
 The comparison is case insensitive.
 * **`blacklist/url`**: This is a list of strings. If a URL is one of these strings, its title is not posted.
 The comparison is case sensitive.
+* **`ignores`**: This is a list of nicks to ignore.
 * **`mode`**: This can for example be `+igR` for [Freenode](https://freenode.net/kb/answer/usermodes).
 Setting it is recommended.
-* **`ignores`**: This is a list of nicks to ignore.
 
 ### Deployment
 * As a reminder, it is recommended that the alerts channel be registered and monitored.
