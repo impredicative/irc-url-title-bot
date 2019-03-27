@@ -83,8 +83,9 @@ The comparison is case sensitive.
 Setting it is recommended.
 
 #### Site-specific settings
-The site of a URL is as defined and returned by the `URLTitleReader().netloc(url)` method of the
-[`urltitle`](https://github.com/impredicative/urltitle/blob/master/urltitle/urltitle.py) package.
+The site of a URL is as defined and returned by the
+[`urltitle`](https://github.com/impredicative/urltitle/blob/master/urltitle/urltitle.py) package via its
+`URLTitleReader().netloc(url)` method.
 
 The following examples show various URLs and their corresponding sites:
 
