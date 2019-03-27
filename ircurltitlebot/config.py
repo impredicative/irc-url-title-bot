@@ -55,9 +55,6 @@ NETLOC_OVERRIDES = {  # Site-specific overrides (w/o www prefix) as condition-ac
                                   '{title} | https://arxiv.org/abs/{url_id}'),
                                  ({'url': r'/abs/(?P<url_id>.+?)$'},
                                   '{title} | https://arxiv.org/pdf/{url_id}')]},
-    'bloomberg.com': {'title_blacklist': {'Bloomberg - Are you a robot?'}},
-    'bpaste.net': {'title_blacklist': {'show at bpaste'}},
-    'imgur.com': {'title_blacklist': {'Imgur: The magic of the Internet'}},
 }
 
 configure_logging()

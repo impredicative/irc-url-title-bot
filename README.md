@@ -48,6 +48,14 @@ ignores:
   - some_user1
   - some_user2
 mode:
+
+sites:
+  bpaste.net:
+    blacklist:
+      title: show at bpaste
+  imgur.com:
+    blacklist:
+      title: 'Imgur: The magic of the Internet'
 ```
 
 #### Global settings
@@ -72,6 +80,32 @@ The comparison is case sensitive.
 * **`ignores`**: This is a list of nicks to ignore.
 * **`mode`**: This can for example be `+igR` for [Freenode](https://freenode.net/kb/answer/usermodes).
 Setting it is recommended.
+
+#### Site-specific settings
+The site of a URL is as defined and returned by the `URLTitleReader().netloc(url)` method of the
+[`urltitle`](https://github.com/impredicative/urltitle/blob/master/urltitle/urltitle.py) package.
+
+The following examples show various URLs and their corresponding sites:
+
+| URL | Site |
+| --- | ---- |
+| https://www.google.com/search?q=asdf | google.com |
+| https://google.com/search?q=hjkl | google.com |
+| google.com/search?q=qwer | google.com |
+| google.com | google.com |
+| https://drive.google.com/drive/my-drive | drive.google.com |
+| https://help.github.com/en/ | help.github.com |
+| https://github.com/pytorch/pytorch | github.com
+| https://www.amazon.com/gp/product/B01F8POA7U | amazon.com
+| https://rise.cs.berkeley.edu/blog/ | rise.cs.berkeley.edu |
+| https://www.swansonvitamins.com/web-specials | swansonvitamins.com |
+
+Site-specific settings are specified under the top-level `sites` key.
+Refer to the sample configuration for usage examples.
+
+* **`blacklist/title`**: This is a single string.
+If the title for a URL matching the site is this blacklisted string, the title is not posted.
+The comparison is case sensitive.
 
 ### Deployment
 * As a reminder, it is recommended that the alerts channel be registered and monitored.
