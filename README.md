@@ -49,6 +49,7 @@ ignores:
   - some_user2
 mode:
 
+# Site-specific (optional):
 sites:
   bpaste.net:
     blacklist:
