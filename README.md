@@ -114,7 +114,7 @@ The comparison is case sensitive.
 * It is recommended that the bot be auto-voiced (+V) in each channel.
 
 * It is recommended that the bot be run as a Docker container using using Docker ≥18.09.2, possibly with
-Docker Compose ≥1.24.0-rc1 or Kubernetes, etc.
+Docker Compose ≥1.24.0.
 To run the bot using Docker Compose, create or add to a version-controlled `docker-compose.yml` file:
 ```yaml
 version: '3.7'
