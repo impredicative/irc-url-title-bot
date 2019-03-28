@@ -51,6 +51,16 @@ mode:
 
 # Site-specific (optional):
 sites:
+  arxiv.org:
+    format:
+      - re:
+          url: /pdf/(?P<url_id>.+?)(?:\.pdf)*$
+        str:
+          title: '{title} | https://arxiv.org/abs/{url_id}'
+      - re:
+          url: /abs/(?P<url_id>.+?)$
+        str:
+          title: '{title} | https://arxiv.org/pdf/{url_id}'
   bpaste.net:
     blacklist:
       title: show at bpaste
@@ -103,11 +113,27 @@ The following examples show various URLs and their corresponding sites:
 | https://www.swansonvitamins.com/web-specials | swansonvitamins.com |
 
 Site-specific settings are specified under the top-level `sites` key.
+The order of execution of the interacting operations is: `blacklist`, `format`.
 Refer to the sample configuration for usage examples.
 
 * **`blacklist/title`**: This is a single string.
 If the title for a URL matching the site is this blacklisted string, the title is not posted.
 The comparison is case sensitive.
+* **`format`**: This contains a list of entries, each of which have keys `re/url` and/or `re/title` along with
+`str/title`.
+* **`format/re/title`**: This is a single regular expression pattern that is
+[searched](https://docs.python.org/3/library/re.html#re.search) for in the title.
+It is used to collect named [key-value pairs](https://docs.python.org/3/library/re.html#re.Match.groupdict) from the
+match.
+If there isn't a match, the next entry in the parent list, if any, is attempted.
+* **`format/re/url`**: Similar to `format/re/title`.
+If both this and `format/re/url` are specified, both patterns must then match their respective strings, failing which
+the next entry in the parent list, if any, is attempted.
+* **`format/str/title`**: The key-value pairs collected using `format/re/title` and/or `format/re/url`,
+are combined along with the default additions of both `title` and `url` as keys.
+The key-value pairs are used to [format](https://docs.python.org/3/library/stdtypes.html#str.format_map) the provided
+quoted title string. The default value is `{title}`.
+If the title is altered, any remaining entries in the parent list are skipped.
 
 ### Deployment
 * As a reminder, it is recommended that the alerts channel be registered and monitored.

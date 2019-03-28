@@ -15,28 +15,29 @@ class URLTitleReader:
         self._url_title_reader = urltitle.URLTitleReader(verify_ssl=False)
 
     def title(self, url: str) -> Optional[str]:
-        netloc = self._url_title_reader.netloc(url)
-        netloc_config = config.INSTANCE.get('sites', {}).get(netloc, {})
-        netloc_config_py = config.NETLOC_OVERRIDES.get(netloc, {})
+        site = self._url_title_reader.netloc(url)
+        site_config = config.INSTANCE.get('sites', {}).get(site, {})
         title = self._url_title_reader.title(url)
 
         # Skip blacklisted title
-        if title == netloc_config.get('blacklist', {}).get('title'):
-            log.info('Skipping blacklisted title %s for site %s.', repr(title), netloc)
+        if title == site_config.get('blacklist', {}).get('title'):
+            log.info('Skipping blacklisted title %s for site %s.', repr(title), site)
             return None
 
         # Substitute title
-        for condition_dict, title_format in netloc_config_py.get('title_subs', []):
+        for format_config in site_config.get('format', []):
             format_params = {'url': url, 'title': title}
-            for condition_key, condition_val in condition_dict.items():
-                match = re.search(condition_val, format_params[condition_key])
+            for key, pattern in format_config.get('re', {}).items():
+                match = re.search(pattern, format_params[key])
                 if not match:
                     break
                 format_params.update(match.groupdict())
             else:
-                title = title_format.format(**format_params)
-                if title != format_params['title']:
-                    log.info('Substituted title %s with %s.', repr(format_params['title']), repr(title))
+                updated_title = format_config.get('str', {}).get('title', '{title}').format_map(format_params)
+                if title != updated_title:
+                    log.info('Substituting title %s with %s.', repr(title), repr(updated_title))
+                    title = updated_title
+                break
 
         return title
 

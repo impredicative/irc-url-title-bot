@@ -50,11 +50,4 @@ LOGGING = {  # Ref: https://docs.python.org/3/howto/logging.html#configuring-log
     },
 }
 
-NETLOC_OVERRIDES = {  # Site-specific overrides (w/o www prefix) as condition-action tuples. Sites must be in lowercase.
-    'arxiv.org': {'title_subs': [({'url': r'/pdf/(?P<url_id>.+?)(?:\.pdf)*$'},
-                                  '{title} | https://arxiv.org/abs/{url_id}'),
-                                 ({'url': r'/abs/(?P<url_id>.+?)$'},
-                                  '{title} | https://arxiv.org/pdf/{url_id}')]},
-}
-
 configure_logging()
