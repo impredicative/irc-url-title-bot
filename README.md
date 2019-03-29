@@ -94,23 +94,8 @@ Setting it is recommended.
 
 #### Site-specific settings
 The site of a URL is as defined and returned by the
-[`urltitle`](https://github.com/impredicative/urltitle/blob/master/urltitle/urltitle.py) package via its
-`URLTitleReader().netloc(url)` method.
-
-The following examples show various URLs and their corresponding sites:
-
-| URL | Site |
-| --- | ---- |
-| https://www.google.com/search?q=asdf | google.com |
-| https://google.com/search?q=hjkl | google.com |
-| google.com/search?q=qwer | google.com |
-| google.com | google.com |
-| https://drive.google.com/drive/my-drive | drive.google.com |
-| https://help.github.com/en/ | help.github.com |
-| https://github.com/pytorch/pytorch | github.com
-| https://www.amazon.com/gp/product/B01F8POA7U | amazon.com
-| https://rise.cs.berkeley.edu/blog/ | rise.cs.berkeley.edu |
-| https://www.swansonvitamins.com/web-specials | swansonvitamins.com |
+[`urltitle`](https://github.com/impredicative/urltitle/) package. Refer to the examples contained in the
+[Customizations](https://github.com/impredicative/urltitle/#customizations) section of its readme.
 
 Site-specific settings are specified under the top-level `sites` key.
 The order of execution of the interacting operations is: `blacklist`, `format`.
