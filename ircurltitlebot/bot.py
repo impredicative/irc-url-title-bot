@@ -45,7 +45,7 @@ class Bot:
             channels=instance['channels'],
             ssl=True,
             debug=False,
-            ns_identity=f"{instance['nick']} {instance['nick_password']}",
+            ns_identity=(instance['nick'], instance['nick_password']),
             connect_modes=instance.get('mode'),
             quit_message='',
             )
