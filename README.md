@@ -24,13 +24,12 @@ The bot can work in multiple channels but on only one server.
 To use with multiple servers, use an instance per server.
 
 ### Configuration
-Prepare a private but version-controlled `config.yaml` file using the sample below.
+Prepare a version-controlled `config.yaml` file using the sample below.
 ```yaml
 # Mandatory:
 host: chat.freenode.net
 ssl_port: 6697
 nick: MyTitle[bot]
-nick_password: the_correct_password
 channels:
   - '#some_chan1'
   - '##some_chan2'
@@ -75,7 +74,6 @@ sites:
 * **`host`**
 * **`ssl_port`**
 * **`nick`**
-* **`nick_password`**
 * **`channels`**
 
 ##### Optional
@@ -140,9 +138,18 @@ services:
         max-file: "3"
     volumes:
       - ./irc-url-title-bot:/config:ro
+    env_file:
+      - ./secrets.env
 ```
-In the YAML, customize the relative path, e.g. `./irc-url-title-bot` of the volume source.
-This should be the directory containing `config.yaml`.
+
+Create or add to a private file `secrets.env` the contents:
+```
+IRC_PASSWORD=YourActualPassword
+```
+Customize the relative path to `secrets.env` in the service definition in `docker-compose.yml`
+
+Also in the service definition in `docker-compose.yml`, customize the relative path, e.g. `./irc-url-title-bot` of the
+volume source. This should be the directory containing `config.yaml`.
 
 From the directory containing the above YAML file, run `docker-compose up -d irc-url-title-bot`.
 Use `docker logs -f irc-url-title-bot` to see and follow informational logs.

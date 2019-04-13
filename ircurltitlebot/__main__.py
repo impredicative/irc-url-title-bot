@@ -23,11 +23,10 @@ def main() -> None:
 
     # Log user config
     logged_instance_config = instance_config.copy()
-    del logged_instance_config['nick_password']
     if 'sites' in logged_instance_config:
         del logged_instance_config['sites']
     log.info('Read user configuration file %s having excerpted configuration: %s',
-             instance_config_path, json.dumps(logged_instance_config))
+             instance_config_path, logged_instance_config)
     for site, site_config in instance_config.get('sites', {}).items():
         log.info('User configuration for site %s is: %s', site, site_config)
 

@@ -1,6 +1,7 @@
 import concurrent.futures
 import itertools
 import logging
+import os
 import re
 import string
 import threading
@@ -45,7 +46,7 @@ class Bot:
             channels=instance['channels'],
             ssl=True,
             debug=False,
-            ns_identity=(instance['nick'], instance['nick_password']),
+            ns_identity=(instance['nick'], os.environ['IRC_PASSWORD']),
             connect_modes=instance.get('mode'),
             quit_message='',
             )
