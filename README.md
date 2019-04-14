@@ -24,6 +24,11 @@ The bot can work in multiple channels but on only one server.
 To use with multiple servers, use an instance per server.
 
 ### Configuration
+Prepare a private `secrets.env` environment file using the sample below:
+```ini
+IRC_PASSWORD=YourActualPassword
+```
+
 Prepare a version-controlled `config.yaml` file using the sample below.
 ```yaml
 # Mandatory:
@@ -141,18 +146,11 @@ services:
     env_file:
       - ./secrets.env
 ```
-
-Create or add to a private file `secrets.env` the contents:
-```editorconfig
-IRC_PASSWORD=YourActualPassword
-```
-Customize the relative path to `secrets.env` in the service definition in `docker-compose.yml`
-
-Also in the service definition in `docker-compose.yml`, customize the relative path, e.g. `./irc-url-title-bot` of the
-volume source. This should be the directory containing `config.yaml`.
+In the above service definition in `docker-compose.yml`, customize its relative paths to `config.yaml` (as defined in
+the volume source, e.g. `./irc-url-title-bot`) and also to `secrets.env`.
 
 From the directory containing the above YAML file, run `docker-compose up -d irc-url-title-bot`.
 Use `docker logs -f irc-url-title-bot` to see and follow informational logs.
 
 ### Maintenance
-If `config.yaml` is updated, the container must be restarted to use the updated file.
+If any configuration file is updated, the container must be restarted to use the updated file.
