@@ -24,7 +24,7 @@ The bot can work in multiple channels but on only one server.
 To use with multiple servers, use an instance per server.
 
 ### Configuration
-Prepare a private `secrets.env` environment file using the sample below:
+Prepare a private `secrets.env` environment file using the sample below.
 ```ini
 IRC_PASSWORD=YourActualPassword
 ```
