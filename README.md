@@ -143,7 +143,7 @@ services:
 ```
 
 Create or add to a private file `secrets.env` the contents:
-```
+```editorconfig
 IRC_PASSWORD=YourActualPassword
 ```
 Customize the relative path to `secrets.env` in the service definition in `docker-compose.yml`
