@@ -170,7 +170,7 @@ def _handle_privmsg(irc: miniirc.IRC, hostmask: Tuple[str, str, str], args: List
     # Filter URLs
     urls = [url[0] for url in itertools.groupby(urls)]  # Guarantees consecutive uniqueness. https://git.io/fjeWl
     urls = [url for url in urls if not re.fullmatch(r'[^@]+@[^@]+\.[^@]+', url)]  # Skips emails. https://git.io/fjeW3
-    urls = [url for url in urls if urlparse(url).scheme != 'file']  # Safety check independently of urlextract.
+    urls = [url for url in urls if urlparse(url).scheme not in ('file', 'git')]
     urls = [url for url in urls if url not in config.INSTANCE['blacklist']['url']]
     if urls:
         urls_str = ', '.join(urls)
