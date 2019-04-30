@@ -148,12 +148,17 @@ services:
     env_file:
       - ./secrets.env
 ```
-In the above service definition in `docker-compose.yml`, customize its relative paths to `config.yaml` (as defined in
-the volume source, e.g. `./irc-url-title-bot`) and also to `secrets.env`.
 
-From the directory containing the above YAML file, run `docker-compose up -d irc-url-title-bot`.
+* In the above service definition in `docker-compose.yml`:
+  * `image`: For better reproducibility, use a specific
+  [versioned tag](https://hub.docker.com/r/ascensive/irc-url-title-bot/tags), e.g. `0.2.2` instead of `latest`.
+  * `volumes`: Customize the relative path to the previously created `config.yaml` file, e.g. `./irc-url-title-bot`.
+  * `env_file`: Customize the relative path to `secrets.env`.
+
+* From the directory containing the above YAML file, run `docker-compose up -d irc-url-title-bot`.
 Use `docker logs -f irc-url-title-bot` to see and follow informational logs.
 
 ### Maintenance
 * If `config.yaml` is updated, the container must be restarted to use the updated file.
-* If `secrets.env` is updated, the container must be recreated (and not just restarted) to use the updated file.
+* If `secrets.env` or the service definition in `docker-compose.yml` are updated, the container must be recreated
+(and not merely restarted) to use the updated file.
