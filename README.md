@@ -155,4 +155,5 @@ From the directory containing the above YAML file, run `docker-compose up -d irc
 Use `docker logs -f irc-url-title-bot` to see and follow informational logs.
 
 ### Maintenance
-If any configuration file is updated, the container must be restarted to use the updated file.
+* If `config.yaml` is updated, the container must be restarted to use the updated file.
+* If `secretes.env` is updated, the container must be recreated (and not just restarted) to use the updated file.
