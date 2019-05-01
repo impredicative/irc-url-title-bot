@@ -156,8 +156,11 @@ def _handle_privmsg(irc: miniirc.IRC, hostmask: Tuple[str, str, str], args: List
         return
     if channel.casefold() not in config.INSTANCE['channels:casefold']:
         assert channel.casefold() == config.INSTANCE['nick:casefold']
-        _alert(irc, f'Ignoring private message from {user} having ident {ident} and hostname {hostname}: {msg}',
-               logging.WARNING)
+        if msg != '\x01VERSION\x01':
+            # Ignoring private message from freenode-connect having ident frigg
+            # and hostname freenode/utility-bot/frigg: VERSION
+            _alert(irc, f'Ignoring private message from {user} having ident {ident} and hostname {hostname}: {msg}',
+                   logging.WARNING)
         return
 
     # Extract URLs
