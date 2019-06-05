@@ -6,7 +6,7 @@
 #
 appdirs==1.4.3            # via urlextract
 beautifulsoup4==4.7.1     # via urltitle
-cachetools==3.1.0         # via urltitle
+cachetools==3.1.1         # via urltitle
 certifi==2019.3.9         # via miniirc
 humanize==0.5.1           # via urltitle
 idna==2.8                 # via urlextract
@@ -17,4 +17,4 @@ ruamel.yaml==0.15.96
 soupsieve==1.9.1          # via beautifulsoup4
 uritools==2.2.0           # via urlextract
 urlextract==0.10
-urltitle==0.2.10
+urltitle==0.2.11
