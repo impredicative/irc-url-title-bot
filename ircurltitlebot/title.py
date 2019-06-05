@@ -14,9 +14,15 @@ class URLTitleReader:
     def __init__(self) -> None:
         self._url_title_reader = urltitle.URLTitleReader(verify_ssl=False)
 
-    def title(self, url: str) -> Optional[str]:
+    def title(self, url: str, channel: str) -> Optional[str]:
         site = self._url_title_reader.netloc(url)
         site_config = config.INSTANCE.get('sites', {}).get(site, {})
+
+        # Skip blacklisted channel
+        if channel.casefold() in (c.casefold() for c in site_config.get('blacklist', {}).get('channels', [])):
+            log.info('Skipping blacklisted channel %s for site %s.', channel, site)
+            return None
+
         title = self._url_title_reader.title(url)
 
         # Skip blacklisted title

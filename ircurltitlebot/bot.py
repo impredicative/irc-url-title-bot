@@ -118,7 +118,7 @@ class Bot:
 def _get_title(irc: miniirc.IRC, channel: str, user: str, url: str) -> Optional[Tuple[str, str, str]]:  # type: ignore
     start_time = time.monotonic()
     try:
-        title = url_title_reader.title(url)
+        title = url_title_reader.title(url, channel)
     except Exception as exc:
         time_used = time.monotonic() - start_time
         msg = f'Error retrieving title for URL in message from {user} in {channel} in {time_used:.1f}s: {exc}'

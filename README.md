@@ -73,6 +73,10 @@ sites:
   imgur.com:
     blacklist:
       title: 'Imgur: The magic of the Internet'
+  youtube.com:
+    blacklist:
+      channels:
+        - '##some_chan2'
 ```
 
 #### Global settings
@@ -106,6 +110,8 @@ Site-specific settings are specified under the top-level `sites` key.
 The order of execution of the interacting operations is: `blacklist`, `format`.
 Refer to the sample configuration for usage examples.
 
+* **`blacklist/channels`**: This is a list of channels for which a title is not posted if the URL matches the site.
+The channel comparison is case insensitive.
 * **`blacklist/title`**: This is a single string.
 If the title for a URL matching the site is this blacklisted string, the title is not posted.
 The comparison is case sensitive.
