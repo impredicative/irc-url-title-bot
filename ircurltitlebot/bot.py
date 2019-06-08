@@ -82,10 +82,15 @@ class Bot:
                              repr(title), user, channel, url)
                     continue
                 msg = f'{title_prefix} {title}'
-                irc.msg(channel, msg)
-                log.info('Sent outgoing message for %s in %s in %.1fs having content %s for URL %s with %s '
-                         'active threads.',
-                         user, channel, time.monotonic() - start_time, repr(msg), url, active_count())
+                if irc.connected:
+                    irc.msg(channel, msg)
+                    log.info('Sent outgoing message for %s in %s in %.1fs having content %s for URL %s with %s '
+                             'active threads.',
+                             user, channel, time.monotonic() - start_time, repr(msg), url, active_count())
+                else:
+                    log.warning('Skipped outgoing message for %s in %s in %.1fs having content %s for URL %s with %s '
+                                'active threads because the IRC client is not connected.',
+                                user, channel, time.monotonic() - start_time, repr(msg), url, active_count())
 
     def _setup_channel_queues(self) -> None:
         channels = config.INSTANCE['channels']
