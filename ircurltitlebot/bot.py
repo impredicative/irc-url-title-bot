@@ -164,8 +164,10 @@ def _handle_privmsg(irc: miniirc.IRC, hostmask: Tuple[str, str, str], args: List
         return
 
     # Extract URLs
+    words = [word for word in msg.split() if not word.isalnum()]  # Filter out several non-URL words.
     try:
-        urls = url_extractor.find_urls(msg, only_unique=False)  # Assumes returned URLs have same order as in message.
+        # urls = url_extractor.find_urls(msg, only_unique=False)  # Assumes returned URLs have same order as in message.
+        urls = [u for word in words for u in url_extractor.find_urls(word)]  # Finds skipped URLS. https://git.io/fjz6L
     except Exception as exc:
         _alert(irc, f'Error extracting URLs in message from {user} in {channel}: "{msg}". The error is: {exc}')
         return
