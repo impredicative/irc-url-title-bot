@@ -146,6 +146,13 @@ def _get_title(irc: miniirc.IRC, channel: str, user: str, url: str) -> Optional[
 # Ref: https://tools.ietf.org/html/rfc1459
 
 
+@miniirc.Handler(900)
+def _handle_loggedin(_irc: miniirc.IRC, hostmask: Tuple[str, str, str], args: List[str]) -> None:
+    log.debug('Handling RPL_LOGGEDIN (900): hostmask=%s, args=%s', hostmask, args)
+    identity = args[1]
+    log.info('Client identity as <nick>!<user>@<host> is %s.', identity)
+
+
 @miniirc.Handler('PRIVMSG')
 def _handle_privmsg(irc: miniirc.IRC, hostmask: Tuple[str, str, str], args: List[str]) -> None:
     # Parse message
