@@ -151,15 +151,13 @@ def _handle_loggedin(_irc: miniirc.IRC, hostmask: Tuple[str, str, str], args: Li
     log.info('Client identity as <nick>!<user>@<host> is %s.', identity)
 
 
-@miniirc.Handler('PRIVMSG', colon=True)
+@miniirc.Handler('PRIVMSG', colon=False)
 def _handle_privmsg(irc: miniirc.IRC, hostmask: Tuple[str, str, str], args: List[str]) -> None:
     # Parse message
     log.debug('Handling incoming message: hostmask=%s, args=%s', hostmask, args)
     user, ident, hostname = hostmask
     channel = args[0]
     msg = args[-1]
-    assert msg.startswith(':')
-    msg = msg[1:]
 
     # Ignore if not actionable
     if user.casefold() in config.INSTANCE['ignores:casefold']:
