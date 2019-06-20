@@ -2,11 +2,9 @@ import concurrent.futures
 import itertools
 import logging
 import os
-import re
 import string
 import threading
 import time
-# noinspection PyUnresolvedReferences
 import queue
 import subprocess
 from typing import Dict, List, NoReturn, Tuple, Optional
@@ -31,7 +29,7 @@ def _alert(irc: miniirc.IRC, msg: str, loglevel: int = logging.ERROR) -> None:
 
 class Bot:
     EXECUTORS: Dict[str, concurrent.futures.ThreadPoolExecutor] = {}
-    QUEUES: Dict[str, queue.SimpleQueue] = {}  # type: ignore
+    QUEUES: Dict[str, queue.SimpleQueue] = {}
 
     def __init__(self) -> None:
         log.info('Initializing bot as: %s', subprocess.check_output('id', text=True).rstrip())
@@ -102,7 +100,7 @@ class Bot:
             log.debug('Setting up executor and queue for %s.', channel)
             self.EXECUTORS[channel] = concurrent.futures.ThreadPoolExecutor(max_workers=config.MAX_WORKERS_PER_CHANNEL,
                                                                             thread_name_prefix=f'TitleReader-{channel}')
-            self.QUEUES[channel] = queue.SimpleQueue()  # type: ignore
+            self.QUEUES[channel] = queue.SimpleQueue()
             log.debug('Finished setting up executor and queue for %s with %s currently active threads.',
                      channel, active_count())
         log.info('Finished setting up executor and queue for %s channels (%s) with %s currently active threads.',
