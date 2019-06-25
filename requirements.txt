@@ -14,7 +14,7 @@ lxml==4.3.4               # via pikepdf
 miniirc==1.4.0
 pikepdf==1.4.0            # via urltitle
 ruamel.yaml==0.15.96
-soupsieve==1.9.1          # via beautifulsoup4
+soupsieve==1.9.2          # via beautifulsoup4
 uritools==2.2.0           # via urlextract
 urlextract==0.12.1
-urltitle==0.2.14
+urltitle==0.2.15
