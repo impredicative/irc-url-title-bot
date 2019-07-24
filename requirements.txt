@@ -5,7 +5,7 @@
 #    pip-compile
 #
 appdirs==1.4.3            # via urlextract
-beautifulsoup4==4.7.1     # via urltitle
+beautifulsoup4==4.8.0     # via urltitle
 cachetools==3.1.1         # via urltitle
 certifi==2019.6.16        # via miniirc
 humanize==0.5.1           # via urltitle
@@ -17,4 +17,4 @@ ruamel.yaml==0.15.99
 soupsieve==1.9.2          # via beautifulsoup4
 uritools==2.2.0           # via urlextract
 urlextract==0.12.1
-urltitle==0.2.21
+urltitle==0.2.22
