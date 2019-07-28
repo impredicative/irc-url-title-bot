@@ -10,11 +10,11 @@ cachetools==3.1.1         # via urltitle
 certifi==2019.6.16        # via miniirc
 humanize==0.5.1           # via urltitle
 idna==2.8                 # via urlextract
-lxml==4.3.4               # via pikepdf
+lxml==4.4.0               # via pikepdf
 miniirc==1.4.0
-pikepdf==1.5.0.post0      # via urltitle
+pikepdf==1.6.0            # via urltitle
 ruamel.yaml==0.15.99
 soupsieve==1.9.2          # via beautifulsoup4
 uritools==2.2.0           # via urlextract
 urlextract==0.12.1
-urltitle==0.2.22
+urltitle==0.2.23
