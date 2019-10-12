@@ -5,17 +5,17 @@
 #    pip-compile
 #
 appdirs==1.4.3            # via urlextract
-beautifulsoup4==4.8.0     # via urltitle
+beautifulsoup4==4.8.1     # via urltitle
 cachetools==3.1.1         # via urltitle
 certifi==2019.9.11        # via miniirc
 humanize==0.5.1           # via urltitle
 idna==2.8                 # via urlextract
 lxml==4.4.1               # via pikepdf
-miniirc==1.4.2
+miniirc==1.4.3
 pikepdf==1.6.4            # via urltitle
-ruamel.yaml.clib==0.1.2   # via ruamel.yaml
+ruamel.yaml.clib==0.2.0   # via ruamel.yaml
 ruamel.yaml==0.16.5
-soupsieve==1.9.3          # via beautifulsoup4
+soupsieve==1.9.4          # via beautifulsoup4
 uritools==2.2.0           # via urlextract
 urlextract==0.13.0
-urltitle==0.2.26
+urltitle==0.2.27
