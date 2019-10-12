@@ -1,4 +1,4 @@
-FROM python:3.7
+FROM python:3.7-buster
 WORKDIR /app
 RUN pip install --no-cache-dir -U pip
 COPY requirements.txt .
