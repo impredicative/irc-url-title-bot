@@ -1,4 +1,6 @@
-FROM python:3.7-stretch
+FROM python:3.7-slim-stretch
+# stretch has fewer issues with invalid SSL certificiates than slim and buster.
+# stretch has an expected EOL on 2020-07-06.
 WORKDIR /app
 RUN pip install --no-cache-dir -U pip
 COPY requirements.txt .
