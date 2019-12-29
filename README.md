@@ -73,6 +73,9 @@ sites:
   imgur.com:
     blacklist:
       title: 'Imgur: The magic of the Internet'
+  paste.ee:
+    blacklist:
+      title_re: ^Paste\.ee\ \-\ View\ paste\ .+
   youtube.com:
     blacklist:
       channels:
@@ -115,6 +118,9 @@ The channel comparison is case insensitive.
 * **`blacklist/title`**: This is a single string.
 If the title for a URL matching the site is this blacklisted string, the title is not posted.
 The comparison is case sensitive.
+* **`blacklist/title_re`**: This is a single regular expression pattern that is
+[searched](https://docs.python.org/3/library/re.html#re.search) for in the title.
+If the title for a URL matching the site is matched against this blacklisted pattern, the title is not posted.
 * **`format`**: This contains a list of entries, each of which have keys `re/title` and/or `re/url` along with
 `str/title`.
 * **`format/re/title`**: This is a single regular expression pattern that is
