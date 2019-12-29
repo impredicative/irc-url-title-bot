@@ -26,7 +26,8 @@ class URLTitleReader:
         title = self._url_title_reader.title(url)
 
         # Skip blacklisted title
-        if title == site_config.get('blacklist', {}).get('title'):
+        blacklist = site_config.get('blacklist', {})
+        if title == blacklist.get('title') or ((bl_re := blacklist.get('title_re')) and re.search(bl_re, title)):
             log.info('Skipping blacklisted title %s for site %s.', repr(title), site)
             return None
 
