@@ -3,9 +3,12 @@ FROM python:3.8-slim-buster
 # As of 2019-11-29, python:3.8-slim-stretch doesn't exist. See https://github.com/docker-library/python/issues/428
 # stretch has an expected EOL on 2020-07-06.
 WORKDIR /app
-RUN pip install --no-cache-dir -U pip
 COPY requirements.txt .
-RUN pip install --no-cache-dir -r ./requirements.txt
+RUN sed -i 's/@SECLEVEL=2/@SECLEVEL=1/' /etc/ssl/openssl.cnf && \
+    pip install --no-cache-dir -U pip && \
+    pip install --no-cache-dir -r ./requirements.txt
+# Note: Regarding SECLEVEL, see https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=927461
+# Lowering the SECLEVEL should allow more SSL certificates to be valid.
 COPY ircurltitlebot ircurltitlebot
 RUN groupadd -g 999 app && \
     useradd -r -m -u 999 -g app app
