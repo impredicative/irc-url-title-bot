@@ -75,7 +75,7 @@ sites:
       title: 'Imgur: The magic of the Internet'
   paste.ee:
     blacklist:
-      title_re: ^Paste\.ee\ \-\ View\ paste\ .+
+      title_re: ^Paste\.ee\ \-\ View\ paste\b
   youtube.com:
     blacklist:
       channels:
