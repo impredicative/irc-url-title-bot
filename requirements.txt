@@ -8,13 +8,14 @@ appdirs==1.4.3            # via urlextract
 beautifulsoup4==4.8.2     # via urltitle
 cachetools==4.0.0         # via urltitle
 certifi==2019.11.28       # via miniirc
-humanize==0.5.1           # via urltitle
-idna==2.8                 # via urlextract
-lxml==4.4.2               # via pikepdf
-miniirc==1.5.1
-pikepdf==1.9.0            # via urltitle
-ruamel.yaml==0.16.6
-soupsieve==1.9.5          # via beautifulsoup4
+humanize==1.0.0           # via urltitle
+idna==2.9                 # via urlextract
+lxml==4.5.0               # via pikepdf
+miniirc==1.5.1            # via -r requirements.in
+pikepdf==1.10.2           # via urltitle
+ruamel.yaml.clib==0.2.0   # via ruamel.yaml
+ruamel.yaml==0.16.10      # via -r requirements.in
+soupsieve==2.0            # via beautifulsoup4
 uritools==3.0.0           # via urlextract
-urlextract==0.14.0
-urltitle==0.2.36
+urlextract==0.14.0        # via -r requirements.in
+urltitle==0.2.37          # via -r requirements.in
