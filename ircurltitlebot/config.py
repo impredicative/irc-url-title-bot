@@ -1,5 +1,6 @@
 """Package configuration."""
 import logging.config
+import types
 from pathlib import Path
 from typing import Dict
 
@@ -15,6 +16,7 @@ def configure_logging() -> None:
 
 INSTANCE: Dict = {}  # Set from YAML config file.
 PACKAGE_NAME = Path(__file__).parent.stem
+runtime = types.SimpleNamespace()  # Set at runtime.  # pylint: disable=invalid-name
 
 ALERTS_CHANNEL_FORMAT_DEFAULT = "##{nick}-alerts"
 MAX_WORKERS_PER_CHANNEL = 3

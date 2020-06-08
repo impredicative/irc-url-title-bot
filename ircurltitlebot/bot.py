@@ -200,10 +200,39 @@ def _get_title(irc: miniirc.IRC, channel: str, user: str, url: str) -> Optional[
 
 
 @miniirc.Handler(900, colon=False)
-def _handle_loggedin(_irc: miniirc.IRC, hostmask: Tuple[str, str, str], args: List[str]) -> None:
+def _handle_900_loggedin(irc: miniirc.IRC, hostmask: Tuple[str, str, str], args: List[str]) -> None:
+    # Parse message
     log.debug("Handling RPL_LOGGEDIN (900): hostmask=%s, args=%s", hostmask, args)
-    identity = args[1]
-    log.info("Client identity as <nick>!<user>@<host> is %s.", identity)
+    runtime_config = config.runtime
+    runtime_config.identity = identity = args[1]
+    nick = identity.split("!", 1)[0]
+    runtime_config.nick_casefold = nick_casefold = nick.casefold()
+    log.info("The client identity as <nick>!<user>@<host> is %s.", identity)
+    if nick_casefold != config.INSTANCE["nick:casefold"]:
+        _alert(
+            irc,
+            f"The client nick was configured to be {config.INSTANCE['nick']} but it is {nick}. "
+            "The configured nick will be regained.",
+            logging.WARNING,
+        )
+        irc.msg("nickserv", "REGAIN", config.INSTANCE["nick"], os.environ["IRC_PASSWORD"])
+
+
+@miniirc.Handler("NICK", colon=False)
+def _handle_nick(irc: miniirc.IRC, hostmask: Tuple[str, str, str], args: List[str]) -> None:
+    log.debug("Handling nick change: hostmask=%s, args=%s", hostmask, args)
+    old_nick, _ident, _hostname = hostmask
+    runtime_config = config.runtime
+
+    # Ignore if not actionable
+    if old_nick.casefold() != runtime_config.nick_casefold:
+        return
+
+    # Update identity, possibly after a nick regain
+    new_nick = args[0]
+    runtime_config.identity = identity = runtime_config.identity.replace(old_nick, new_nick, 1)
+    runtime_config.nick_casefold = new_nick.casefold()
+    _alert(irc, f"The updated client identity as <nick>!<user>@<host> is inferred to be {identity}.", logging.INFO)
 
 
 @miniirc.Handler("PRIVMSG", colon=False)

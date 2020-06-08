@@ -1,3 +1,4 @@
-# Vulture whitelist:
-_handle_loggedin  # unused function (ircurltitlebot/bot.py:192)
-_handle_privmsg  # unused function (ircurltitlebot/bot.py:199)
+_handle_loggedin  # unused function (ircurltitlebot/bot.py:202)
+_handle_900_loggedin  # unused function (ircurltitlebot/bot.py:209)
+_handle_nick  # unused function (ircurltitlebot/bot.py:228)
+_handle_privmsg  # unused function (ircurltitlebot/bot.py:245)
