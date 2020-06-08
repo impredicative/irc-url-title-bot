@@ -36,8 +36,7 @@ class Bot:
 
     def __init__(self) -> None:
         log.info(
-            "Initializing bot as: %s",
-            subprocess.check_output("id", text=True).rstrip(),  # pylint: disable=unexpected-keyword-arg
+            "Initializing bot as: %s", subprocess.check_output("id", text=True).rstrip(),  # pylint: disable=unexpected-keyword-arg
         )
         instance = config.INSTANCE
         self._setup_channel_queues()  # Sets up executors and queues required by IRC handler.
@@ -83,19 +82,14 @@ class Bot:
                 user, url, title = result
                 if title.casefold() in title_blacklist:
                     log.info(
-                        "Skipping globally blacklisted title %s for %s in %s for URL %s",
-                        repr(title),
-                        user,
-                        channel,
-                        url,
+                        "Skipping globally blacklisted title %s for %s in %s for URL %s", repr(title), user, channel, url,
                     )
                     continue
                 msg = f"{title_prefix} {title}"
                 if irc.connected:
                     irc.msg(channel, msg)
                     log.info(
-                        "Sent outgoing message for %s in %s in %.1fs having content %s for URL %s with %s "
-                        "active threads.",
+                        "Sent outgoing message for %s in %s in %.1fs having content %s for URL %s with %s " "active threads.",
                         user,
                         channel,
                         time.monotonic() - start_time,
@@ -105,8 +99,7 @@ class Bot:
                     )
                 else:
                     log.warning(
-                        "Skipped outgoing message for %s in %s in %.1fs having content %s for URL %s with %s "
-                        "active threads because the IRC client is not connected.",
+                        "Skipped outgoing message for %s in %s in %.1fs having content %s for URL %s with %s " "active threads because the IRC client is not connected.",
                         user,
                         channel,
                         time.monotonic() - start_time,
@@ -120,27 +113,17 @@ class Bot:
         channels_str = ", ".join(channels)
         active_count = threading.active_count
         log.debug(
-            "Setting up executor and queue for %s channels (%s) with %s currently active threads.",
-            len(channels),
-            channels_str,
-            active_count(),
+            "Setting up executor and queue for %s channels (%s) with %s currently active threads.", len(channels), channels_str, active_count(),
         )
         for channel in channels:
             log.debug("Setting up executor and queue for %s.", channel)
-            self.EXECUTORS[channel] = concurrent.futures.ThreadPoolExecutor(
-                max_workers=config.MAX_WORKERS_PER_CHANNEL, thread_name_prefix=f"TitleReader-{channel}"
-            )
+            self.EXECUTORS[channel] = concurrent.futures.ThreadPoolExecutor(max_workers=config.MAX_WORKERS_PER_CHANNEL, thread_name_prefix=f"TitleReader-{channel}")
             self.QUEUES[channel] = queue.SimpleQueue()
             log.debug(
-                "Finished setting up executor and queue for %s with %s currently active threads.",
-                channel,
-                active_count(),
+                "Finished setting up executor and queue for %s with %s currently active threads.", channel, active_count(),
             )
         log.info(
-            "Finished setting up executor and queue for %s channels (%s) with %s currently active threads.",
-            len(channels),
-            channels_str,
-            active_count(),
+            "Finished setting up executor and queue for %s channels (%s) with %s currently active threads.", len(channels), channels_str, active_count(),
         )
 
     def _setup_channel_threads(self) -> None:
@@ -148,18 +131,12 @@ class Bot:
         channels_str = ", ".join(channels)
         active_count = threading.active_count
         log.debug(
-            "Setting up thread for %s channels (%s) with %s currently active threads.",
-            len(channels),
-            channels_str,
-            active_count(),
+            "Setting up thread for %s channels (%s) with %s currently active threads.", len(channels), channels_str, active_count(),
         )
         for channel in channels:
             threading.Thread(target=self._msg_channel, name=f"ChannelMessenger-{channel}", args=(channel,)).start()
         log.info(
-            "Finished setting up thread for %s channels (%s) with %s currently active threads.",
-            len(channels),
-            channels_str,
-            active_count(),
+            "Finished setting up thread for %s channels (%s) with %s currently active threads.", len(channels), channels_str, active_count(),
         )
 
 
@@ -173,10 +150,7 @@ def _get_title(irc: miniirc.IRC, channel: str, user: str, url: str) -> Optional[
         # Note: exc almost always includes the actual URL, so it need not be duplicated in the alert.
         if url.endswith(PUNCTUATION):
             period = "" if msg.endswith(".") else "."
-            msg += (
-                f'{period} It will however be reattempted with its trailing punctuation character "{url[-1]}" '
-                "stripped."
-            )
+            msg += f'{period} It will however be reattempted with its trailing punctuation character "{url[-1]}" ' "stripped."
             log.info(msg)
         else:
             _alert(irc, msg)
@@ -185,12 +159,7 @@ def _get_title(irc: miniirc.IRC, channel: str, user: str, url: str) -> Optional[
     else:
         if title:  # Filter out None or blank title.
             log.debug(
-                'Returning title "%s" for URL %s in message from %s in %s in %.1fs.',
-                title,
-                url,
-                user,
-                channel,
-                time.monotonic() - start_time,
+                'Returning title "%s" for URL %s in message from %s in %s in %.1fs.', title, url, user, channel, time.monotonic() - start_time,
             )
             return user, url, title
     return None
@@ -210,10 +179,7 @@ def _handle_900_loggedin(irc: miniirc.IRC, hostmask: Tuple[str, str, str], args:
     log.info("The client identity as <nick>!<user>@<host> is %s.", identity)
     if nick_casefold != config.INSTANCE["nick:casefold"]:
         _alert(
-            irc,
-            f"The client nick was configured to be {config.INSTANCE['nick']} but it is {nick}. "
-            "The configured nick will be regained.",
-            logging.WARNING,
+            irc, f"The client nick was configured to be {config.INSTANCE['nick']} but it is {nick}. The configured nick will be regained.", logging.WARNING,
         )
         irc.msg("nickserv", "REGAIN", config.INSTANCE["nick"], os.environ["IRC_PASSWORD"])
 
@@ -252,9 +218,7 @@ def _handle_privmsg(irc: miniirc.IRC, hostmask: Tuple[str, str, str], args: List
             # Ignoring private message from freenode-connect having ident frigg
             # and hostname freenode/utility-bot/frigg: VERSION
             _alert(
-                irc,
-                f"Ignoring private message from {user} having ident {ident} and hostname {hostname}: {msg}",
-                logging.WARNING,
+                irc, f"Ignoring private message from {user} having ident {ident} and hostname {hostname}: {msg}", logging.WARNING,
             )
         return
 

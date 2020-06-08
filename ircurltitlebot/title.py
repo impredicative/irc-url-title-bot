@@ -30,9 +30,7 @@ class URLTitleReader:
 
         # Skip blacklisted title
         blacklist = site_config.get("blacklist", {})
-        if title == blacklist.get("title") or (
-            (bl_re := blacklist.get("title_re")) and re.search(bl_re, title)  # pylint: disable=used-before-assignment
-        ):
+        if title == blacklist.get("title") or ((bl_re := blacklist.get("title_re")) and re.search(bl_re, title)):  # pylint: disable=used-before-assignment
             log.info("Skipping blacklisted title %s for site %s.", repr(title), site)
             return None
 
