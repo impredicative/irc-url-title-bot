@@ -89,7 +89,7 @@ class Bot:
                 if irc.connected:
                     irc.msg(channel, msg)
                     log.info(
-                        "Sent outgoing message for %s in %s in %.1fs having content %s for URL %s with %s " "active threads.",
+                        "Sent outgoing message for %s in %s in %.1fs having content %s for URL %s with %s active threads.",
                         user,
                         channel,
                         time.monotonic() - start_time,
@@ -99,7 +99,7 @@ class Bot:
                     )
                 else:
                     log.warning(
-                        "Skipped outgoing message for %s in %s in %.1fs having content %s for URL %s with %s " "active threads because the IRC client is not connected.",
+                        "Skipped outgoing message for %s in %s in %.1fs having content %s for URL %s with %s active threads because the IRC client is not connected.",
                         user,
                         channel,
                         time.monotonic() - start_time,
