@@ -3,6 +3,8 @@ import logging.config
 from pathlib import Path
 from typing import Dict
 
+import ircstyle
+
 
 def configure_logging() -> None:
     """Configure logging."""
@@ -16,7 +18,7 @@ PACKAGE_NAME = Path(__file__).parent.stem
 
 ALERTS_CHANNEL_FORMAT_DEFAULT = "##{nick}-alerts"
 MAX_WORKERS_PER_CHANNEL = 3
-TITLE_PREFIX = "⤷"
+TITLE_PREFIX = ircstyle.style("⤷", fg="green", reset=True)
 TITLE_TIMEOUT = 60
 
 LOGGING = {  # Ref: https://docs.python.org/3/howto/logging.html#configuring-logging

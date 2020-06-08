@@ -10,6 +10,7 @@ cachetools==4.1.0         # via urltitle
 certifi==2020.4.5.2       # via miniirc
 humanize==2.4.0           # via urltitle
 idna==2.9                 # via urlextract
+ircstyle==0.1.1           # via -r requirements.in
 lxml==4.5.1               # via pikepdf
 miniirc==1.6.2            # via -r requirements.in
 pikepdf==1.14.0           # via urltitle
