@@ -19,4 +19,4 @@ ruamel.yaml==0.16.10      # via -r requirements.in
 soupsieve==2.0.1          # via beautifulsoup4
 uritools==3.0.0           # via urlextract
 urlextract==0.14.0        # via -r requirements.in
-urltitle==0.2.41          # via -r requirements.in
+urltitle==0.2.42          # via -r requirements.in
