@@ -14,10 +14,10 @@ idna==2.10                # via urlextract
 ircstyle==0.1.1           # via -r requirements.in
 lxml==4.5.1               # via pikepdf
 miniirc==1.6.2            # via -r requirements.in
-pikepdf==1.16.0           # via urltitle
+pikepdf==1.16.1           # via urltitle
 ruamel.yaml.clib==0.2.0   # via ruamel.yaml
 ruamel.yaml==0.16.10      # via -r requirements.in
 soupsieve==2.0.1          # via beautifulsoup4
 uritools==3.0.0           # via urlextract
 urlextract==1.0.0         # via -r requirements.in
-urltitle==0.2.44          # via -r requirements.in
+urltitle==0.2.45          # via -r requirements.in
