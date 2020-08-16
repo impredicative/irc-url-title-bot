@@ -9,15 +9,16 @@ beautifulsoup4==4.9.1     # via urltitle
 cachetools==4.1.1         # via urltitle
 certifi==2020.6.20        # via miniirc
 filelock==3.0.12          # via urlextract
-humanize==2.4.1           # via urltitle
+humanize==2.6.0           # via urltitle
 idna==2.10                # via urlextract
 ircstyle==0.1.1           # via -r requirements.in
-lxml==4.5.1               # via pikepdf
+lxml==4.5.2               # via pikepdf
 miniirc==1.6.2            # via -r requirements.in
-pikepdf==1.16.1           # via urltitle
+pikepdf==1.18.0           # via urltitle
+pillow==7.2.0             # via pikepdf
 ruamel.yaml.clib==0.2.0   # via ruamel.yaml
 ruamel.yaml==0.16.10      # via -r requirements.in
 soupsieve==2.0.1          # via beautifulsoup4
 uritools==3.0.0           # via urlextract
 urlextract==1.0.0         # via -r requirements.in
-urltitle==0.2.45          # via -r requirements.in
+urltitle==0.3.0           # via -r requirements.in
