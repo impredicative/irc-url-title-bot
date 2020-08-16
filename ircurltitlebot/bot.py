@@ -11,6 +11,7 @@ import time
 from typing import Dict, List, NoReturn, Optional, Tuple
 from urllib.parse import urlparse
 
+import ircstyle
 import miniirc
 import urlextract
 
@@ -223,6 +224,7 @@ def _handle_privmsg(irc: miniirc.IRC, hostmask: Tuple[str, str, str], args: List
         return
 
     # Extract URLs
+    msg = ircstyle.unstyle(msg)
     # words = [word for word in msg.split() if not word.isalnum()]  # Filter out several non-URL words.
     try:
         urls = url_extractor.find_urls(msg, only_unique=False)  # Assumes returned URLs have same order as in message.
