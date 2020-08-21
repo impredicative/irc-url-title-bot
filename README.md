@@ -99,7 +99,7 @@ It is recommended that the alerts channel be registered and monitored.
 * **`blacklist/title`**: This is a list of strings. If a title is one of these strings, it is not posted.
 The comparison is case insensitive.
 * **`blacklist/url`**: This is a list of strings. If a URL is one of these strings, its title is not posted.
-The comparison is case sensitive.
+The comparison is case insensitive.
 * **`ignores`**: This is a list of nicks to ignore.
 * **`mode`**: This can for example be `+igR` for [Freenode](https://freenode.net/kb/answer/usermodes).
 Setting it is recommended.

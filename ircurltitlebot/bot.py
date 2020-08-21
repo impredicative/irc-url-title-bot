@@ -237,7 +237,7 @@ def _handle_privmsg(irc: miniirc.IRC, hostmask: Tuple[str, str, str], args: List
     urls = [url[0] for url in itertools.groupby(urls)]  # Guarantees consecutive uniqueness. https://git.io/fjeWl
     # urls = [url for url in urls if not re.fullmatch(r'[^@]+@[^@]+\.[^@]+', url)]  # Skips emails. https://git.io/fjeW3
     urls = [url for url in urls if urlparse(url).scheme not in ("file", "git")]  # Alt: scheme in ('http', 'https', '')
-    urls = [url for url in urls if url not in config.INSTANCE["blacklist"]["url"]]
+    urls = [url for url in urls if url.casefold() not in config.INSTANCE["blacklist"]["url"]]
     if urls:
         urls_str = ", ".join(urls)
         log.debug("Incoming message from %s in %s has %s URLs to process: %s", user, channel, len(urls), urls_str)

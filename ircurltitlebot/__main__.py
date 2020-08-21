@@ -50,6 +50,7 @@ def load_config() -> None:
     blacklists["title"] = set(blacklists.get("title", set()))
     blacklists["title"] = {entry.casefold() for entry in blacklists["title"]}
     blacklists["url"] = set(blacklists.get("url", set()))
+    blacklists["url"] = {entry.casefold() for entry in blacklists["url"]}
 
     config.INSTANCE = instance_config
 
