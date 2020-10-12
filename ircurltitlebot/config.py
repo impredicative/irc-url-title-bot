@@ -26,9 +26,9 @@ TITLE_TIMEOUT = 60
 LOGGING = {  # Ref: https://docs.python.org/3/howto/logging.html#configuring-logging
     "version": 1,
     "formatters": {
-        "detailed": {"format": "%(asctime)s %(levelname)s %(threadName)s:%(name)s:%(lineno)d:%(funcName)s: %(message)s",},  # Note: Use %(thread)x- if needed for thread ID.
+        "detailed": {"format": "%(asctime)s %(levelname)s %(threadName)s:%(name)s:%(lineno)d:%(funcName)s: %(message)s"},  # Note: Use %(thread)x- if needed for thread ID.
     },
-    "handlers": {"console": {"class": "logging.StreamHandler", "level": "DEBUG", "formatter": "detailed", "stream": "ext://sys.stdout",},},
+    "handlers": {"console": {"class": "logging.StreamHandler", "level": "DEBUG", "formatter": "detailed", "stream": "ext://sys.stdout"}},
     "loggers": {
         PACKAGE_NAME: {"level": "INFO", "handlers": ["console"], "propagate": False},
         "urltitle": {"level": "INFO", "handlers": ["console"], "propagate": False},
