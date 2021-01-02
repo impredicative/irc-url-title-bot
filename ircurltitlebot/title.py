@@ -32,8 +32,10 @@ class URLTitleReader:
         except Exception as exc:  # pylint: disable=broad-except
             if site_config.get("alert", {}).get("read", True):
                 raise
-            log.warning("Failed to read title for %s: %s", url, exc)
+            log.error("Failed to read title. %s", exc)
             return None
+        else:
+            log.info("Read title for %s: %s", url, title)
 
         # Skip blacklisted title for site
         blacklist = site_config.get("blacklist", {})
