@@ -32,8 +32,8 @@ LOGGING = {  # Ref: https://docs.python.org/3/howto/logging.html#configuring-log
     "loggers": {
         "__main__": {"level": "INFO", "handlers": ["console"], "propagate": False},
         PACKAGE_NAME: {"level": "INFO", "handlers": ["console"], "propagate": False},
+        "": {"level": "CRITICAL", "handlers": ["console"]},
         # "urltitle": {"level": "INFO", "handlers": ["console"], "propagate": False},
-        # "": {"level": "DEBUG", "handlers": ["console"]},
     },
 }
 
