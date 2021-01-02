@@ -32,7 +32,7 @@ LOGGING = {  # Ref: https://docs.python.org/3/howto/logging.html#configuring-log
     "loggers": {
         PACKAGE_NAME: {"level": "INFO", "handlers": ["console"], "propagate": False},
         # "urltitle": {"level": "INFO", "handlers": ["console"], "propagate": False},
-        "": {"level": "DEBUG", "handlers": ["console"]},
+        # "": {"level": "DEBUG", "handlers": ["console"]},
     },
 }
 
