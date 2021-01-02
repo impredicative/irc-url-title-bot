@@ -30,6 +30,7 @@ LOGGING = {  # Ref: https://docs.python.org/3/howto/logging.html#configuring-log
     },
     "handlers": {"console": {"class": "logging.StreamHandler", "level": "DEBUG", "formatter": "detailed", "stream": "ext://sys.stdout"}},
     "loggers": {
+        "__main__": {"level": "INFO", "handlers": ["console"], "propagate": False},
         PACKAGE_NAME: {"level": "INFO", "handlers": ["console"], "propagate": False},
         # "urltitle": {"level": "INFO", "handlers": ["console"], "propagate": False},
         # "": {"level": "DEBUG", "handlers": ["console"]},
