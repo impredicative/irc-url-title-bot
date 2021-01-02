@@ -27,6 +27,7 @@ class URLTitleReader:
             log.info("Skipping blacklisted channel %s for site %s.", channel, site)
             return None
 
+        # Read title
         try:
             title = self._url_title_reader.title(url)
         except Exception as exc:  # pylint: disable=broad-except
