@@ -97,9 +97,9 @@ Its default value is `##{nick}-alerts`. The key `{nick}`, if present in the valu
 For example, if the nick is `MyTitle[bot]`, alerts will by default be sent to `##MyTitle[bot]-alerts`.
 Since a channel name starts with #, the name if provided **must be quoted**.
 It is recommended that the alerts channel be registered and monitored.
-* **`blacklist/title`**: This is a list of strings. If a title is one of these strings, it is not posted.
+* **`blacklist.title`**: This is a list of strings. If a title is one of these strings, it is not posted.
 The comparison is case insensitive.
-* **`blacklist/url`**: This is a list of strings. If a URL is one of these strings, its title is not posted.
+* **`blacklist.url`**: This is a list of strings. If a URL is one of these strings, its title is not posted.
 The comparison is case insensitive.
 * **`ignores`**: This is a list of nicks to ignore.
 * **`mode`**: This can for example be `+igR` for [Freenode](https://freenode.net/kb/answer/usermodes).
@@ -114,26 +114,26 @@ Site-specific settings are specified under the top-level `sites` key.
 The order of execution of the interacting operations is: `blacklist`, `format`.
 Refer to the sample configuration for usage examples.
 
-* **`alert`**: If `false`, a failure is not alerted, although it is still logged.
-* **`blacklist/channels`**: This is a list of channels for which a title is not posted if the URL matches the site.
+* **`alert.read`**: If `false`, a read failure is not alerted. The default is `true`.
+* **`blacklist.channels`**: This is a list of channels for which a title is not posted if the URL matches the site.
 The channel comparison is case insensitive.
-* **`blacklist/title`**: This is a single string or a list of strings.
+* **`blacklist.title`**: This is a single string or a list of strings.
 If the title for a URL matching the site is a blacklisted string, the title is not posted.
 The comparison is case sensitive.
-* **`blacklist/title_re`**: This is a single regular expression pattern that is
+* **`blacklist.title_re`**: This is a single regular expression pattern that is
 [searched](https://docs.python.org/3/library/re.html#re.search) for in the title.
 If the title for a URL matching the site is matched against this blacklisted pattern, the title is not posted.
-* **`format`**: This contains a list of entries, each of which have keys `re/title` and/or `re/url` along with
-`str/title`.
-* **`format/re/title`**: This is a single regular expression pattern that is
+* **`format`**: This contains a list of entries, each of which have keys `re.title` and/or `re.url` along with
+`str.title`.
+* **`format.re.title`**: This is a single regular expression pattern that is
 [searched](https://docs.python.org/3/library/re.html#re.search) for in the title.
 It is used to collect named [key-value pairs](https://docs.python.org/3/library/re.html#re.Match.groupdict) from the
 match.
 If there isn't a match, the next entry in the parent list, if any, is attempted.
-* **`format/re/url`**: This is similar to `format/re/title`.
-If both this and `format/re/url` are specified, both patterns must then match their respective strings, failing which
+* **`format.re.url`**: This is similar to `format.re.title`.
+If both this and `format.re.url` are specified, both patterns must then match their respective strings, failing which
 the next entry in the parent list, if any, is attempted.
-* **`format/str/title`**: The key-value pairs collected using `format/re/title` and/or `format/re/url`,
+* **`format.str.title`**: The key-value pairs collected using `format.re.title` and/or `format.re.url`,
 are combined along with the default additions of both `title` and `url` as keys.
 The key-value pairs are used to [format](https://docs.python.org/3/library/stdtypes.html#str.format_map) the provided
 quoted title string. The default value is `{title}`.
