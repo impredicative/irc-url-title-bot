@@ -114,6 +114,7 @@ Site-specific settings are specified under the top-level `sites` key.
 The order of execution of the interacting operations is: `blacklist`, `format`.
 Refer to the sample configuration for usage examples.
 
+* **`alert`**: If `false`, a failure is not alerted, although it is still logged.
 * **`blacklist/channels`**: This is a list of channels for which a title is not posted if the URL matches the site.
 The channel comparison is case insensitive.
 * **`blacklist/title`**: This is a single string or a list of strings.
