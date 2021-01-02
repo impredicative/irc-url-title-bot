@@ -21,20 +21,20 @@ class URLTitleReader:
         site = self._url_title_reader.netloc(url)
         site_config = config.INSTANCE.get("sites", {}).get(site, {})
 
-        # Skip blacklisted channel
+        # Skip blacklisted channel for site
         if channel.casefold() in (c.casefold() for c in site_config.get("blacklist", {}).get("channels", [])):
             log.info("Skipping blacklisted channel %s for site %s.", channel, site)
             return None
 
         title = self._url_title_reader.title(url)
 
-        # Skip blacklisted title
+        # Skip blacklisted title for site
         blacklist = site_config.get("blacklist", {})
         if title == blacklist.get("title") or ((bl_re := blacklist.get("title_re")) and re.search(bl_re, title)):  # pylint: disable=used-before-assignment
             log.info("Skipping blacklisted title %s for site %s.", repr(title), site)
             return None
 
-        # Substitute title
+        # Substitute title for site
         for format_config in site_config.get("format", []):
             format_params = {"url": url, "title": title}
             for key, pattern in format_config.get("re", {}).items():
