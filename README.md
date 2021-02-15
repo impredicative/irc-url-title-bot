@@ -92,7 +92,7 @@ sites:
 * **`channels`**
 
 ##### Optional
-* **`alerts_channel`**: Some but not all warning and error alerts are sent to the this channel.
+* **`alerts_channel`**: Some but not all warning and error alerts are sent to this channel.
 Its default value is `##{nick}-alerts`. The key `{nick}`, if present in the value, is formatted with the actual nick.
 For example, if the nick is `MyTitle[bot]`, alerts will by default be sent to `##MyTitle[bot]-alerts`.
 Since a channel name starts with #, the name if provided **must be quoted**.
