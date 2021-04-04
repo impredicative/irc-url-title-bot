@@ -1,4 +1,4 @@
-FROM python:3.8-slim-buster as build
+FROM python:3.9-slim-buster as build
 # python:3.7-slim-stretch (using Debian 9) has fewer issues with invalid https certificiates than python:3.7-slim-buster (using Debian 10).
 # As of 2019-11-29, python:3.8-slim-stretch doesn't exist. See https://github.com/docker-library/python/issues/428
 WORKDIR /app
