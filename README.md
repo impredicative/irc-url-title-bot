@@ -5,9 +5,11 @@ As a disclaimer, note that SSL verification is disabled, and that the posted tit
 due to a number of factors.
 
 ## Links
-* Code: https://github.com/impredicative/irc-url-title-bot
-* Changelog: https://github.com/impredicative/irc-url-title-bot/releases
-* Container: https://hub.docker.com/r/ascensive/irc-url-title-bot
+| Caption   | Link                                                        |
+|-----------|-------------------------------------------------------------|
+| Code      | https://github.com/impredicative/irc-url-title-bot          |
+| Changelog | https://github.com/impredicative/irc-url-title-bot/releases |
+| Image     | https://hub.docker.com/r/ascensive/irc-url-title-bot        |
 
 ## Examples
 ```text
