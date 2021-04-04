@@ -57,6 +57,9 @@ class Bot:
         self._setup_channel_threads()  # Threads require IRC client.
         log.info("Alerts will be sent to %s.", config.INSTANCE["alerts_channel"])
 
+        while True:  # This is intended to prevent a concurrent.futures error.
+            time.sleep(1234567890)
+
     def _msg_channel(self, channel: str) -> NoReturn:  # pylint: disable=too-many-locals
         instance = config.INSTANCE
         irc = self._irc
