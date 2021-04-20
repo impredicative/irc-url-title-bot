@@ -24,7 +24,7 @@ lxml==4.6.3
     # via pikepdf
 miniirc==1.6.3
     # via -r requirements.in
-pikepdf==2.9.2
+pikepdf==2.10.0
     # via urltitle
 pillow==8.1.2
     # via pikepdf
