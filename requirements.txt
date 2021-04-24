@@ -14,7 +14,7 @@ certifi==2020.12.5
     # via miniirc
 filelock==3.0.12
     # via urlextract
-humanize==3.3.0
+humanize==3.4.1
     # via urltitle
 idna==3.1
     # via urlextract
@@ -24,13 +24,13 @@ lxml==4.6.3
     # via pikepdf
 miniirc==1.6.3
     # via -r requirements.in
-pikepdf==2.9.2
+pikepdf==2.11.2
     # via urltitle
-pillow==8.1.2
+pillow==8.2.0
     # via pikepdf
 ruamel.yaml.clib==0.2.2
     # via ruamel.yaml
-ruamel.yaml==0.17.2
+ruamel.yaml==0.17.4
     # via -r requirements.in
 soupsieve==2.2.1
     # via beautifulsoup4
