@@ -9,7 +9,6 @@ import subprocess
 import threading
 import time
 from typing import Dict, List, NoReturn, Optional, Tuple
-from urllib.parse import urlparse
 
 import ircstyle
 import miniirc
@@ -17,6 +16,7 @@ import urlextract
 
 from . import config
 from .title import url_title_reader
+from .util.urllib import validate_parsed_url
 
 PUNCTUATION = tuple(string.punctuation)
 
@@ -219,7 +219,7 @@ def _handle_privmsg(irc: miniirc.IRC, hostmask: Tuple[str, str, str], args: List
     # Filter URLs
     urls = [url[0] for url in itertools.groupby(urls)]  # Guarantees consecutive uniqueness. https://git.io/fjeWl
     # urls = [url for url in urls if not re.fullmatch(r'[^@]+@[^@]+\.[^@]+', url)]  # Skips emails. https://git.io/fjeW3
-    urls = [url for url in urls if urlparse(url).scheme not in ("file", "git")]  # Alt: scheme in ('http', 'https', '')
+    urls = [url for url in urls if validate_parsed_url(url)]
     urls = [url for url in urls if url.casefold() not in config.INSTANCE["blacklist"]["url"]]
     if urls:
         urls_str = ", ".join(urls)
