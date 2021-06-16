@@ -37,7 +37,7 @@ A full-fledged real-world example is also
 [available](https://github.com/impredicative/freenode-bots/blob/master/irc-url-title-bot/config.yaml).
 ```yaml
 # Mandatory:
-host: chat.freenode.net
+host: irc.libera.chat
 ssl_port: 6697
 nick: MyTitle[bot]
 channels:
@@ -45,7 +45,7 @@ channels:
   - '##some_chan2'
 
 # Optional:
-alerts_channel: '##mybot-alerts'
+alerts_channel: '#mybot-alerts'
 blacklist:
   title:
     - Invalid host
@@ -104,7 +104,7 @@ The comparison is case insensitive.
 * **`blacklist.url`**: This is a list of strings. If a URL is one of these strings, its title is not posted.
 The comparison is case insensitive.
 * **`ignores`**: This is a list of nicks to ignore.
-* **`mode`**: This can for example be `+igR` for [Freenode](https://freenode.net/kb/answer/usermodes).
+* **`mode`**: This can for example be `+igR` for [Libera](https://libera.chat/guides/usermodes).
 Setting it is recommended.
 
 #### Site-specific settings
