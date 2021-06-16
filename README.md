@@ -34,7 +34,7 @@ IRC_PASSWORD=YourActualPassword
 
 Prepare a version-controlled `config.yaml` file using the sample below.
 A full-fledged real-world example is also
-[available](https://github.com/impredicative/freenode-bots/blob/master/irc-url-title-bot/config.yaml).
+[available](https://github.com/impredicative/irc-bots/blob/master/libera/title-bot/config.yaml).
 ```yaml
 # Mandatory:
 host: irc.libera.chat
