@@ -13,12 +13,12 @@ due to a number of factors.
 
 ## Examples
 ```text
-<Adam> For image super-resolution, see https://arxiv.org/abs/1902.06068, and for more reviews see https://j.mp/ml-reviews.
-<Title[bot]> ⤷ [1902.06068] Deep Learning for Image Super-resolution: A Survey | https://arxiv.org/pdf/1902.06068
-<Title[bot]> ⤷ Review articles | freenode-machinelearning.github.io
-<Eve> Thanks. Is github.com/visinf/n3net a good project? I've been studying bugs.python.org/file47781/Tutorial_EDIT.pdf
-<Title[bot]> ⤷ GitHub - visinf/n3net: Neural Nearest Neighbors Networks (NIPS*2018)
-<Title[bot]> ⤷ Python Tutorial
+<Adam> For the mathematics of deep learning, see https://arxiv.org/abs/2105.04026 and https://arxiv.org/pdf/2104.14033
+<TitleBot> ⤷ [2105.04026] The Modern Mathematics of Deep Learning | PDF: https://arxiv.org/pdf/2105.04026
+<TitleBot> ⤷ [2104.14033] A Study of the Mathematics of Deep Learning | Abstract: https://arxiv.org/abs/2104.14033
+<Eve> Is github.com/visinf/n3net a good project? I've been studying bugs.python.org/file47781/Tutorial_EDIT.pdf
+<TitleBot> ⤷ GitHub - visinf/n3net: Neural Nearest Neighbors Networks (NIPS*2018)
+<TitleBot> ⤷ Python Tutorial
 ```
 For more examples, see [`urltitle`](https://github.com/impredicative/urltitle/).
 
@@ -39,7 +39,7 @@ A full-fledged real-world example is also
 # Mandatory:
 host: irc.libera.chat
 ssl_port: 6697
-nick: MyTitle[bot]
+nick: MyTitleBot
 channels:
   - '#some_chan1'
   - '##some_chan2'
@@ -96,7 +96,7 @@ sites:
 ##### Optional
 * **`alerts_channel`**: Some but not all warning and error alerts are sent to this channel.
 Its default value is `##{nick}-alerts`. The key `{nick}`, if present in the value, is formatted with the actual nick.
-For example, if the nick is `MyTitle[bot]`, alerts will by default be sent to `##MyTitle[bot]-alerts`.
+For example, if the nick is `MyTitleBot`, alerts will by default be sent to `##MyTitleBot-alerts`.
 Since a channel name starts with #, the name if provided **must be quoted**.
 It is recommended that the alerts channel be registered and monitored.
 * **`blacklist.title`**: This is a list of strings. If a title is one of these strings, it is not posted.
