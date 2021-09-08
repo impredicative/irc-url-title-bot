@@ -26,7 +26,7 @@ miniirc==1.6.3
     # via -r requirements.in
 pikepdf==2.16.1
     # via urltitle
-pillow==8.3.1
+pillow==8.3.2
     # via pikepdf
 ruamel.yaml==0.17.10
     # via -r requirements.in
