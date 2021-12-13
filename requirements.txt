@@ -20,7 +20,7 @@ idna==3.2
     # via urlextract
 ircstyle==0.1.5
     # via -r requirements.in
-lxml==4.6.3
+lxml==4.6.5
     # via pikepdf
 miniirc==1.6.3
     # via -r requirements.in
@@ -30,8 +30,6 @@ pillow==8.3.1
     # via pikepdf
 ruamel.yaml==0.17.10
     # via -r requirements.in
-ruamel.yaml.clib==0.2.6
-    # via ruamel.yaml
 soupsieve==2.2.1
     # via beautifulsoup4
 uritools==3.0.2
