@@ -26,12 +26,10 @@ miniirc==1.6.3
     # via -r requirements.in
 pikepdf==2.16.1
     # via urltitle
-pillow==8.3.1
+pillow==9.0.0
     # via pikepdf
 ruamel.yaml==0.17.10
     # via -r requirements.in
-ruamel.yaml.clib==0.2.6
-    # via ruamel.yaml
 soupsieve==2.2.1
     # via beautifulsoup4
 uritools==3.0.2
