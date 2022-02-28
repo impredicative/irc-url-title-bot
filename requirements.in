@@ -1,5 +1,5 @@
 ircstyle
-miniirc # https://github.com/luk3yx/miniirc/blob/master/CHANGELOG.md
+miniirc==1.6.3 # https://github.com/luk3yx/miniirc/blob/master/CHANGELOG.md
 ruamel.yaml
 urlextract # https://github.com/lipoja/URLExtract/blob/master/CHANGELOG.rst
 urltitle
