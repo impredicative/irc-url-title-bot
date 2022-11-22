@@ -26,7 +26,7 @@ packaging==21.3
     # via pikepdf
 pikepdf==5.0.1
     # via urltitle
-pillow==9.0.1
+pillow==9.3.0
     # via pikepdf
 platformdirs==2.5.1
     # via urlextract
@@ -34,8 +34,6 @@ pyparsing==3.0.7
     # via packaging
 ruamel-yaml==0.17.21
     # via -r requirements.in
-ruamel-yaml-clib==0.2.6
-    # via ruamel-yaml
 soupsieve==2.3.1
     # via beautifulsoup4
 uritools==4.0.0
