@@ -8,7 +8,7 @@ beautifulsoup4==4.10.0
     # via urltitle
 cachetools==5.0.0
     # via urltitle
-certifi==2021.10.8
+certifi==2022.12.7
     # via miniirc
 filelock==3.6.0
     # via urlextract
@@ -34,8 +34,6 @@ pyparsing==3.0.7
     # via packaging
 ruamel-yaml==0.17.21
     # via -r requirements.in
-ruamel-yaml-clib==0.2.6
-    # via ruamel-yaml
 soupsieve==2.3.1
     # via beautifulsoup4
 uritools==4.0.0
